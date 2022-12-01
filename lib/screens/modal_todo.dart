@@ -1,4 +1,5 @@
 /*
+  Base Code Used:
   Created by: Claizel Coubeili Cepe
   Date: 27 October 2022
   Description: Sample todo app with networking
@@ -12,7 +13,9 @@ import 'package:week7_networking_discussion/providers/todo_provider.dart';
 class TodoModal extends StatelessWidget {
   String type;
   // int todoIndex;
-  TextEditingController _formFieldController = TextEditingController();
+  TextEditingController _titleController = TextEditingController();
+  TextEditingController _descController = TextEditingController();
+  TextEditingController _dateController = TextEditingController();
 
   TodoModal({
     super.key,
@@ -23,7 +26,7 @@ class TodoModal extends StatelessWidget {
   Text _buildTitle() {
     switch (type) {
       case 'Add':
-        return const Text("Add new todo");
+        return const Text("Add todo");
       case 'Edit':
         return const Text("Edit todo");
       case 'Delete':
@@ -47,13 +50,32 @@ class TodoModal extends StatelessWidget {
         }
       // Edit and add will have input field in them
       default:
-        return TextField(
-          controller: _formFieldController,
-          decoration: InputDecoration(
-            border: const OutlineInputBorder(),
-            // hintText: todoIndex != -1 ? todoItems[todoIndex].title : '',
+        return Column(children: [
+          TextField(
+            controller: _titleController,
+            decoration: InputDecoration(
+              hintText: "Title",
+            ),
           ),
-        );
+          TextField(
+            controller: _descController,
+            decoration: InputDecoration(
+              hintText: "Description",
+            ),
+          ),
+          TextField(
+              readOnly: true,
+              controller: _dateController,
+              decoration: InputDecoration(hintText: 'Deadline'),
+              onTap: () async {
+                var date = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(1900),
+                    lastDate: DateTime(2100));
+                _dateController.text = date.toString().substring(0, 10);
+              })
+        ]);
     }
   }
 
@@ -67,9 +89,10 @@ class TodoModal extends StatelessWidget {
             {
               // Instantiate a todo objeect to be inserted, default userID will be 1, the id will be the next id in the list
               Todo temp = Todo(
-                  userId: 1,
-                  completed: false,
-                  title: _formFieldController.text);
+                userId: 1,
+                completed: false,
+                title: _titleController.text, /*description: "Hell"*/
+              );
 
               context.read<TodoListProvider>().addTodo(temp);
 

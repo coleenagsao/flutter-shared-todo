@@ -25,6 +25,7 @@ class _TodoPageState extends State<TodoPage> {
   Widget build(BuildContext context) {
     // access the list of todos in the provider
     Stream<QuerySnapshot> todosStream = context.watch<TodoListProvider>().todos;
+
     return Scaffold(
       drawer: Drawer(
           child: ListView(padding: EdgeInsets.zero, children: [
@@ -44,7 +45,7 @@ class _TodoPageState extends State<TodoPage> {
         ),
       ])),
       appBar: AppBar(
-        title: Text("Todo"),
+        title: Text("Shared Todo"),
       ),
       body: StreamBuilder(
         stream: todosStream,

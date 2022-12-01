@@ -10,12 +10,14 @@ class Todo {
   final int userId;
   String? id;
   String title;
+  //String description;
   bool completed;
 
   Todo({
     required this.userId,
     this.id,
     required this.title,
+    //required this.description,
     required this.completed,
   });
 
@@ -25,6 +27,7 @@ class Todo {
       userId: json['userId'],
       id: json['id'],
       title: json['title'],
+      //description: json['description'],
       completed: json['completed'],
     );
   }
@@ -38,6 +41,7 @@ class Todo {
     return {
       'userId': todo.userId,
       'title': todo.title,
+      //'description': todo.description,
       'completed': todo.completed,
     };
   }
