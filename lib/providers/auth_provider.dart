@@ -20,6 +20,8 @@ class AuthProvider with ChangeNotifier {
 
   User? get user => userObj;
 
+  String? get userId => userObj?.uid;
+
   bool get isAuthenticated {
     return user != null;
   }

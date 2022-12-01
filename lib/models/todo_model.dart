@@ -7,7 +7,7 @@
 import 'dart:convert';
 
 class Todo {
-  final int userId;
+  final dynamic userId;
   String? id;
   String title;
   String? desc;

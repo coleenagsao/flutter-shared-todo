@@ -29,7 +29,8 @@ class FirebaseAuthAPI {
     auth.signOut();
   }
 
-  void signUp(String email, String password, String fname, String lname, String uname, String bdate, String loc) async {
+  void signUp(String email, String password, String fname, String lname,
+      String uname, String bdate, String loc) async {
     UserCredential credential;
     try {
       credential = await auth.createUserWithEmailAndPassword(
@@ -37,7 +38,8 @@ class FirebaseAuthAPI {
         password: password,
       );
       if (credential.user != null) {
-        saveUserToFirestore(credential.user?.uid, email, fname, lname, uname, bdate, loc);
+        saveUserToFirestore(
+            credential.user?.uid, email, fname, lname, uname, bdate, loc);
       }
     } on FirebaseAuthException catch (e) {
       //possible to return something more useful than just print an error message to improve UI/UX
@@ -51,10 +53,11 @@ class FirebaseAuthAPI {
     }
   }
 
-  void saveUserToFirestore(
-      String? uid, String email, String fname, String lname, String uname, String bdate, String loc) async {
+  void saveUserToFirestore(String? uid, String email, String fname,
+      String lname, String uname, String bdate, String loc) async {
     try {
       await db.collection("users").doc(uid).set({
+        "userId": uid,
         "email": email,
         "fname": fname,
         "lname": lname,

@@ -8,6 +8,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:week7_networking_discussion/models/todo_model.dart';
+import 'package:week7_networking_discussion/providers/auth_provider.dart';
 import 'package:week7_networking_discussion/providers/todo_provider.dart';
 
 class TodoModal extends StatelessWidget {
@@ -89,7 +90,10 @@ class TodoModal extends StatelessWidget {
             {
               // Instantiate a todo objeect to be inserted, default userID will be 1, the id will beEthe next id in the list
               Todo temp = Todo(
-                  userId: 1,
+                  userId: Provider.of<AuthProvider>(context, listen: false)
+                      .userId
+                      .toString(),
+                  // context.watch<AuthProvider>().userId.toString(),
                   completed: false,
                   title: titleController.text,
                   desc: descController.text,
