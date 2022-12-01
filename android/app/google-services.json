@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "367262022680",
+    "project_id": "cmsc23-todo-app-coleenagsao",
+    "storage_bucket": "cmsc23-todo-app-coleenagsao.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:367262022680:android:119071ed46f5cdb591d76d",
+        "android_client_info": {
+          "package_name": "com.example.week7_networking_discussion"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "367262022680-9dltl57ddqk4k2f6thr6465k2knu4rpb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRKCmYiI5OQYLXSrXMLLdsIGr4NGzPjEY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "367262022680-9dltl57ddqk4k2f6thr6465k2knu4rpb.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "367262022680-kntj98as8e7om8e48g04u2akrasvbgul.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.week7NetworkingDiscussion"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
