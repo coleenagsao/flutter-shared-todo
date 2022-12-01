@@ -13,9 +13,9 @@ import 'package:week7_networking_discussion/providers/todo_provider.dart';
 class TodoModal extends StatelessWidget {
   String type;
   // int todoIndex;
-  TextEditingController _titleController = TextEditingController();
-  TextEditingController _descController = TextEditingController();
-  TextEditingController _dateController = TextEditingController();
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descController = TextEditingController();
+  TextEditingController dateController = TextEditingController();
 
   TodoModal({
     super.key,
@@ -52,20 +52,20 @@ class TodoModal extends StatelessWidget {
       default:
         return Column(children: [
           TextField(
-            controller: _titleController,
+            controller: titleController,
             decoration: InputDecoration(
               hintText: "Title",
             ),
           ),
           TextField(
-            controller: _descController,
+            controller: descController,
             decoration: InputDecoration(
               hintText: "Description",
             ),
           ),
           TextField(
               readOnly: true,
-              controller: _dateController,
+              controller: dateController,
               decoration: InputDecoration(hintText: 'Deadline'),
               onTap: () async {
                 var date = await showDatePicker(
@@ -73,7 +73,7 @@ class TodoModal extends StatelessWidget {
                     initialDate: DateTime.now(),
                     firstDate: DateTime(1900),
                     lastDate: DateTime(2100));
-                _dateController.text = date.toString().substring(0, 10);
+                dateController.text = date.toString().substring(0, 10);
               })
         ]);
     }
@@ -87,12 +87,14 @@ class TodoModal extends StatelessWidget {
         switch (type) {
           case 'Add':
             {
-              // Instantiate a todo objeect to be inserted, default userID will be 1, the id will be the next id in the list
+              // Instantiate a todo objeect to be inserted, default userID will be 1, the id will beEthe next id in the list
               Todo temp = Todo(
-                userId: 1,
-                completed: false,
-                title: _titleController.text, /*description: "Hell"*/
-              );
+                  userId: 1,
+                  completed: false,
+                  title: titleController.text,
+                  desc: descController.text,
+                  deadline: dateController.text,
+                  notifications: []);
 
               context.read<TodoListProvider>().addTodo(temp);
 
