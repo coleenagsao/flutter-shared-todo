@@ -35,7 +35,12 @@ class _TodoPageState extends State<TodoPage> {
           ),
           child: Text('Menu'),
         ),
-        ListTile(title: const Text('User Profile'), onTap: () {}),
+        ListTile(
+            title: const Text('User Profile'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.pushNamed(context, '/profile');
+            }),
         ListTile(
           title: const Text('Logout'),
           onTap: () {
