@@ -31,7 +31,7 @@ class _TodoPageState extends State<TodoPage> {
           child: ListView(padding: EdgeInsets.zero, children: [
         const UserAccountsDrawerHeader(
           decoration: BoxDecoration(
-            color: Colors.blueGrey,
+            color: Colors.grey,
           ),
           accountName: Text(
             'Coleen Agsao',
@@ -54,6 +54,13 @@ class _TodoPageState extends State<TodoPage> {
             onTap: () {
               Navigator.pop(context);
               Navigator.pushNamed(context, '/profile');
+            }),
+        ListTile(
+            leading: Icon(Icons.heat_pump_rounded),
+            title: const Text('Friends'),
+            onTap: () {
+              Navigator.pop(context);
+              Navigator.pushNamed(context, '/friends');
             }),
         ListTile(
           leading: Icon(Icons.logout),

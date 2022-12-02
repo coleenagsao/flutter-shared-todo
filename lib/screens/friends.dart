@@ -4,21 +4,11 @@ import 'package:provider/provider.dart';
 import 'package:week7_networking_discussion/providers/auth_provider.dart';
 import 'package:week7_networking_discussion/providers/user_provider.dart';
 
-class Profile extends StatelessWidget {
-  const Profile({super.key});
+class Friends extends StatelessWidget {
+  const Friends({super.key});
 
   @override
   Widget build(BuildContext context) {
-    //need to find user with the uid and get the profile's info
-    Stream<QuerySnapshot> usersStream = context.watch<UserListProvider>().users;
-
-    String? userId = context.watch<AuthProvider>().userId;
-
-    Future<QuerySnapshot> currentUser =
-        context.watch<UserListProvider>().getCurrentUser(userId);
-
-    //NOTE: Continue with figuring out the loginned user profile
-
     //Title Section
     Widget titleSection = Container(
       padding: const EdgeInsets.all(32),
@@ -33,14 +23,14 @@ class Profile extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.only(bottom: 8),
                   child: const Text(
-                    'Coleen Therese A. Agsao',
+                    'Friend Name',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
                 Text(
-                  'Naga City, Camarines Sur, Bicol',
+                  'Location',
                   style: TextStyle(
                     color: Colors.grey[500],
                   ),
@@ -49,11 +39,14 @@ class Profile extends StatelessWidget {
             ),
           ),
           /*3*/
-          Icon(
-            Icons.cake_rounded,
-            color: Colors.blueGrey,
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
+            child: ElevatedButton(
+              onPressed: () {},
+              child: const Text('Visit', style: TextStyle(color: Colors.white)),
+              style: ElevatedButton.styleFrom(shape: StadiumBorder()),
+            ),
           ),
-          const Text('06-09-01'),
         ],
       ),
     );
@@ -92,7 +85,7 @@ class Profile extends StatelessWidget {
     );
 
     return MaterialApp(
-      title: "About Me",
+      title: "Friends",
       theme: ThemeData(
         // Define the default brightness and colors.
         primaryColor: Colors.grey,
@@ -103,18 +96,18 @@ class Profile extends StatelessWidget {
       ),
       home: Scaffold(
           appBar: AppBar(
-            title: const Text('Profile'),
+            title: const Text('Friends'),
           ),
           body: ListView(
             children: [
-              Image.asset(
-                'images/bridge.jpg',
-                width: 600,
-                height: 240,
-                fit: BoxFit.cover,
-              ),
+              // Image.asset(
+              //   'images/bridge.jpg',
+              //   width: 600,
+              //   height: 240,
+              //   fit: BoxFit.cover,
+              // ),
               titleSection,
-              textSection,
+              titleSection,
             ],
           )),
     );
