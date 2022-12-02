@@ -63,6 +63,7 @@ class _TodoPageState extends State<TodoPage> {
             Navigator.pop(context);
           },
         ),
+        Divider(),
         AboutListTile(
           icon: Icon(
             Icons.info,
@@ -175,3 +176,6 @@ class _TodoPageState extends State<TodoPage> {
     );
   }
 }
+
+//References:
+// https://blog.logrocket.com/how-to-add-navigation-drawer-flutter/
