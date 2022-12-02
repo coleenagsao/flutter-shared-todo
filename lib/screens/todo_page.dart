@@ -63,7 +63,18 @@ class _TodoPageState extends State<TodoPage> {
             Navigator.pop(context);
           },
         ),
-        AboutListTile()
+        AboutListTile(
+          icon: Icon(
+            Icons.info,
+          ),
+          child: Text('About App'),
+          applicationIcon: Icon(
+            Icons.local_play,
+          ),
+          applicationName: 'Bridge',
+          applicationVersion: '1.0.0',
+          applicationLegalese: 'CMSC 23 Project 22-23',
+        )
       ])),
       appBar: AppBar(
         title: Text("Shared Todo"),

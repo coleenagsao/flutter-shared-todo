@@ -108,7 +108,7 @@ class Profile extends StatelessWidget {
           body: ListView(
             children: [
               // Image.asset(
-              //   'images/naga.jpg',
+              //   'images/user.png',
               //   width: 600,
               //   height: 240,
               //   fit: BoxFit.cover,
