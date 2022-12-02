@@ -46,7 +46,7 @@ class MyApp extends StatelessWidget {
         '/profile': (context) => const Profile()
       },
       theme: ThemeData(
-        primarySwatch: Colors.blueGrey,
+        primarySwatch: Colors.grey,
       ),
     );
   }

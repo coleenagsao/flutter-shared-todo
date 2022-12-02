@@ -107,12 +107,12 @@ class Profile extends StatelessWidget {
           ),
           body: ListView(
             children: [
-              // Image.asset(
-              //   'images/user.png',
-              //   width: 600,
-              //   height: 240,
-              //   fit: BoxFit.cover,
-              // ),
+              Image.asset(
+                'images/login.jpg',
+                width: 600,
+                height: 240,
+                fit: BoxFit.cover,
+              ),
               titleSection,
               textSection,
             ],

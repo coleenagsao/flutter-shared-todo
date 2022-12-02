@@ -22,6 +22,7 @@ class _SignupPageState extends State<SignupPage> {
     final fname = TextField(
       controller: fnameController,
       decoration: const InputDecoration(
+        prefixIcon: Icon(Icons.person),
         hintText: "First Name",
       ),
     );
@@ -29,6 +30,7 @@ class _SignupPageState extends State<SignupPage> {
     final lname = TextField(
       controller: lnameController,
       decoration: const InputDecoration(
+        prefixIcon: Icon(Icons.person),
         hintText: "Last Name",
       ),
     );
@@ -36,6 +38,7 @@ class _SignupPageState extends State<SignupPage> {
     final uname = TextField(
       controller: unameController,
       decoration: const InputDecoration(
+        prefixIcon: Icon(Icons.verified_user),
         hintText: "Username",
       ),
     );
@@ -43,6 +46,7 @@ class _SignupPageState extends State<SignupPage> {
     final loc = TextField(
       controller: locController,
       decoration: const InputDecoration(
+        prefixIcon: Icon(Icons.location_city),
         hintText: "Location",
       ),
     );
@@ -50,7 +54,8 @@ class _SignupPageState extends State<SignupPage> {
     final bdate = TextField(
         readOnly: true,
         controller: dateController,
-        decoration: InputDecoration(hintText: 'Birthday'),
+        decoration: InputDecoration(
+            prefixIcon: Icon(Icons.date_range), hintText: 'Birthday'),
         onTap: () async {
           var date = await showDatePicker(
               context: context,
@@ -63,6 +68,7 @@ class _SignupPageState extends State<SignupPage> {
     final email = TextField(
       controller: emailController,
       decoration: const InputDecoration(
+        prefixIcon: Icon(Icons.email),
         hintText: "Email",
       ),
     );
@@ -71,6 +77,7 @@ class _SignupPageState extends State<SignupPage> {
       controller: passwordController,
       obscureText: true,
       decoration: const InputDecoration(
+        prefixIcon: Icon(Icons.key),
         hintText: 'Password',
       ),
     );
@@ -90,6 +97,7 @@ class _SignupPageState extends State<SignupPage> {
           Navigator.pop(context);
         },
         child: const Text('Sign up', style: TextStyle(color: Colors.white)),
+        style: ElevatedButton.styleFrom(shape: StadiumBorder()),
       ),
     );
 
@@ -101,6 +109,7 @@ class _SignupPageState extends State<SignupPage> {
           //call the auth provider here
         },
         child: const Text('Back', style: TextStyle(color: Colors.white)),
+        style: ElevatedButton.styleFrom(shape: StadiumBorder()),
       ),
     );
 
@@ -109,12 +118,21 @@ class _SignupPageState extends State<SignupPage> {
       body: Center(
         child: ListView(
           shrinkWrap: true,
-          padding: const EdgeInsets.only(left: 40.0, right: 40.0),
+          padding: const EdgeInsets.only(
+              bottom: 40, top: 40.0, left: 40.0, right: 40.0),
           children: <Widget>[
             const Text(
-              "Sign Up",
+              "SIGN UP TO BRIDGE",
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 25),
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            Image.asset(
+              'images/login.jpg',
+              width: 600,
+              height: 400,
             ),
             fname,
             lname,
