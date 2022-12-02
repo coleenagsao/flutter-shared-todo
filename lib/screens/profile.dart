@@ -102,6 +102,63 @@ class Profile extends StatelessWidget {
         ),
       ),
       home: Scaffold(
+          drawer: Drawer(
+              child: ListView(padding: EdgeInsets.zero, children: [
+            const UserAccountsDrawerHeader(
+              decoration: BoxDecoration(
+                color: Colors.grey,
+              ),
+              accountName: Text(
+                'Coleen Agsao',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              accountEmail: Text(
+                "coleenagsao@gmail.com",
+                style: TextStyle(
+                  fontWeight: FontWeight.normal,
+                  fontStyle: FontStyle.italic,
+                ),
+              ),
+              currentAccountPicture: FlutterLogo(),
+            ),
+            ListTile(
+                leading: Icon(Icons.today_rounded),
+                title: const Text('Todos'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/');
+                }),
+            ListTile(
+                leading: Icon(Icons.heat_pump_rounded),
+                title: const Text('Friends'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/friends');
+                }),
+            ListTile(
+              leading: Icon(Icons.logout),
+              title: const Text('Logout'),
+              onTap: () {
+                context.read<AuthProvider>().signOut();
+                Navigator.pop(context);
+              },
+            ),
+            Divider(),
+            AboutListTile(
+              icon: Icon(
+                Icons.info,
+              ),
+              child: Text('About App'),
+              applicationIcon: Icon(
+                Icons.local_play,
+              ),
+              applicationName: 'Bridge',
+              applicationVersion: '1.0.0',
+              applicationLegalese: 'CMSC 23 Project 22-23',
+            )
+          ])),
           appBar: AppBar(
             title: const Text('Profile'),
           ),
