@@ -88,7 +88,6 @@ class _SignupPageState extends State<SignupPage> {
               dateController.text,
               locController.text);
           Navigator.pop(context);
-          //call the auth provider here
         },
         child: const Text('Sign up', style: TextStyle(color: Colors.white)),
       ),

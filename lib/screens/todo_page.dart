@@ -29,25 +29,41 @@ class _TodoPageState extends State<TodoPage> {
     return Scaffold(
       drawer: Drawer(
           child: ListView(padding: EdgeInsets.zero, children: [
-        const DrawerHeader(
+        const UserAccountsDrawerHeader(
           decoration: BoxDecoration(
-            color: Colors.blue,
+            color: Colors.blueGrey,
           ),
-          child: Text('Menu'),
+          accountName: Text(
+            'Coleen Agsao',
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          accountEmail: Text(
+            "coleenagsao@gmail.com",
+            style: TextStyle(
+              fontWeight: FontWeight.normal,
+              fontStyle: FontStyle.italic,
+            ),
+          ),
+          currentAccountPicture: FlutterLogo(),
         ),
         ListTile(
+            leading: Icon(Icons.person),
             title: const Text('User Profile'),
             onTap: () {
               Navigator.pop(context);
               Navigator.pushNamed(context, '/profile');
             }),
         ListTile(
+          leading: Icon(Icons.logout),
           title: const Text('Logout'),
           onTap: () {
             context.read<AuthProvider>().signOut();
             Navigator.pop(context);
           },
         ),
+        AboutListTile()
       ])),
       appBar: AppBar(
         title: Text("Shared Todo"),

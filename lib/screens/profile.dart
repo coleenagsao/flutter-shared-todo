@@ -51,7 +51,7 @@ class Profile extends StatelessWidget {
           /*3*/
           Icon(
             Icons.cake_rounded,
-            color: Colors.lightBlue[500],
+            color: Colors.blueGrey,
           ),
           const Text('06-09-01'),
         ],
@@ -95,7 +95,7 @@ class Profile extends StatelessWidget {
       title: "About Me",
       theme: ThemeData(
         // Define the default brightness and colors.
-        primaryColor: Colors.lightBlue[800],
+        primaryColor: Colors.blueGrey,
         fontFamily: 'Helvetica',
         textTheme: const TextTheme(
           headline6: TextStyle(fontSize: 20.0),
