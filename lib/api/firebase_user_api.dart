@@ -26,4 +26,51 @@ class FirebaseUserAPI {
       return "Failed with error '${e.code}: ${e.message}";
     }
   }
+
+  Future<String> addFriend(String currentUserId, String? userId) async {
+    try {
+      print("Current User: $userId");
+      print("Potential Friend: $currentUserId");
+
+      //remove ids to sent and received
+      await db.collection("users").doc(currentUserId).update({
+        "receivedFriendRequests": FieldValue.arrayRemove([userId])
+      });
+      await db.collection("users").doc(userId).update({
+        "sentFriendRequests": FieldValue.arrayRemove([currentUserId])
+      });
+
+      //add current user id to potential friend's received
+      await db.collection("users").doc(userId).update({
+        "friends": FieldValue.arrayUnion([currentUserId])
+      });
+      await db.collection("users").doc(currentUserId).update({
+        "friends": FieldValue.arrayUnion([userId])
+      });
+
+      return "Successfully accepted request!";
+    } on FirebaseException catch (e) {
+      return "Failed with error '${e.code}: ${e.message}";
+    }
+  }
+
+  Future<String> deleteFriendRequest(
+      String currentUserId, String? userId) async {
+    try {
+      print("Current User: $userId");
+      print("To delete: $currentUserId");
+
+      //add current user id to potential friend's received
+      await db.collection("users").doc(userId).update({
+        "sentFriendRequests": FieldValue.arrayRemove([currentUserId])
+      });
+      await db.collection("users").doc(currentUserId).update({
+        "receivedFriendRequests": FieldValue.arrayUnion([userId])
+      });
+
+      return "Successfully deleted request!";
+    } on FirebaseException catch (e) {
+      return "Failed with error '${e.code}: ${e.message}";
+    }
+  }
 }
