@@ -19,6 +19,67 @@ class _FriendsPageState extends State<FriendsPage> {
   Widget build(BuildContext context) {
     Stream<QuerySnapshot> usersStream = context.watch<UserListProvider>().users;
 
+    Widget friendsList = StreamBuilder(
+      stream: usersStream,
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+            child: Text("Error encountered! ${snapshot.error}"),
+          );
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (!snapshot.hasData) {
+          return Center(
+            child: Text("No Users Found."),
+          );
+        }
+
+        return ListView.builder(
+          itemCount: snapshot.data?.docs.length,
+          itemBuilder: ((context, index) {
+            User user = User.fromJson(
+                snapshot.data?.docs[index].data() as Map<String, dynamic>);
+            String currentUserId =
+                Provider.of<AuthProvider>(context, listen: false)
+                    .userId
+                    .toString();
+            if (user.userId.toString() != currentUserId &&
+                (user.friends.any((item) => item.contains(currentUserId)))) {
+              return ListTile(
+                title: Text(
+                  "${user.fname} ${user.lname}",
+                ),
+                leading: IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.person),
+                ),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    ElevatedButton(
+                        onPressed: () {
+                          //add current user id to this user's friend request
+                          context
+                              .read<UserListProvider>()
+                              .changeSelectedUser(user);
+                          context
+                              .read<UserListProvider>()
+                              .unfriend(currentUserId);
+                        },
+                        child: Text("Unfriend"))
+                  ],
+                ),
+              );
+            } else {
+              return Text("");
+            }
+          }),
+        );
+      },
+    );
+
     Widget suggestionsList = StreamBuilder(
       stream: usersStream,
       builder: (context, snapshot) {
@@ -245,7 +306,7 @@ class _FriendsPageState extends State<FriendsPage> {
         ],
       ),
       body: <Widget>[
-        Container(alignment: Alignment.center, child: const Text("Friends")),
+        Container(alignment: Alignment.center, child: friendsList),
         Container(
           color: Colors.green,
           alignment: Alignment.center,

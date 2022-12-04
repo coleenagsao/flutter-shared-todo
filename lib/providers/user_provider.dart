@@ -47,4 +47,11 @@ class UserListProvider with ChangeNotifier {
     print(message);
     notifyListeners();
   }
+
+  void unfriend(String currentUserId) async {
+    String message =
+        await firebaseService.unfriend(currentUserId, _loggedInUser!.userId);
+    print(message);
+    notifyListeners();
+  }
 }
