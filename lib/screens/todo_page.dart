@@ -11,7 +11,6 @@ import 'package:week7_networking_discussion/providers/todo_provider.dart';
 import 'package:week7_networking_discussion/providers/auth_provider.dart';
 import 'package:week7_networking_discussion/screens/modal_todo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:week7_networking_discussion/providers/auth_provider.dart';
 
 class TodoPage extends StatefulWidget {
   const TodoPage({super.key});

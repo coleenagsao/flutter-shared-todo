@@ -4,12 +4,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:week7_networking_discussion/models/user_model.dart';
 
 class UserListProvider with ChangeNotifier {
-  late FirebaseTodoAPI firebaseService;
+  late FirebaseUserAPI firebaseService;
   late Stream<QuerySnapshot> _usersStream;
   User? _loggedInUser;
 
   UserListProvider() {
-    firebaseService = FirebaseTodoAPI();
+    firebaseService = FirebaseUserAPI();
     fetchUsers();
   }
 
@@ -18,12 +18,8 @@ class UserListProvider with ChangeNotifier {
 
   User get selected => _loggedInUser!;
 
-  changeSelectedTodo(User item) {
+  changeSelectedUser(User item) {
     _loggedInUser = item;
-  }
-
-  Future<QuerySnapshot> getCurrentUser(userId) {
-    return firebaseService.getCurrentUser(userId);
   }
 
   void fetchUsers() {

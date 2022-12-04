@@ -45,17 +45,17 @@ class User {
     return data.map<User>((dynamic d) => User.fromJson(d)).toList();
   }
 
-  Map<String, dynamic> toJson(User todo) {
+  Map<String, dynamic> toJson(User user) {
     return {
-      'userId': todo.userId,
-      'fname': todo.fname,
-      'lname': todo.lname,
-      'uname': todo.uname,
-      'bdate': todo.bdate,
-      'loc': todo.loc,
-      'friends': todo.friends,
-      'receivedFriendRequests': todo.receivedFriendRequests,
-      'sentFriendRequests': todo.sentFriendRequests,
+      'userId': user.userId,
+      'fname': user.fname,
+      'lname': user.lname,
+      'uname': user.uname,
+      'bdate': user.bdate,
+      'loc': user.loc,
+      'friends': user.friends,
+      'receivedFriendRequests': user.receivedFriendRequests,
+      'sentFriendRequests': user.sentFriendRequests,
     };
   }
 }
