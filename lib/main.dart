@@ -9,6 +9,7 @@ import 'package:week7_networking_discussion/providers/todo_provider.dart';
 import 'package:week7_networking_discussion/providers/auth_provider.dart';
 import 'package:week7_networking_discussion/providers/user_provider.dart';
 import 'package:week7_networking_discussion/screens/friends.dart';
+import 'package:week7_networking_discussion/screens/friends_page.dart';
 import 'package:week7_networking_discussion/screens/profile.dart';
 import 'package:week7_networking_discussion/screens/todo_page.dart';
 import 'package:week7_networking_discussion/screens/login.dart';
@@ -45,7 +46,8 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const AuthWrapper(),
         '/profile': (context) => const Profile(),
-        '/friends': (context) => const Friends()
+        '/friends': (context) => const FriendsPage(),
+        '/todo': (context) => const TodoPage()
       },
       theme: ThemeData(
         primarySwatch: Colors.grey,

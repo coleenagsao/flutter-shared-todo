@@ -10,44 +10,7 @@ class Profile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //need to find user with the uid and get the profile's info
     Stream<QuerySnapshot> usersStream = context.watch<UserListProvider>().users;
-
-    String? userId = context.watch<AuthProvider>().userId;
-    print("Current: ${userId}");
-
-    //Button Section
-    Color color = Theme.of(context).primaryColor;
-
-    List hobbies = ["Gaming", "Finance", "Socializing", "Eating", "Reading"];
-    List hobbiesIcon = [
-      Icons.gamepad,
-      Icons.money,
-      Icons.call,
-      Icons.food_bank,
-      Icons.book
-    ];
-
-    List<Widget> hobbiesWidget = [];
-
-    for (int i = 0; i < hobbies.length; i++) {
-      hobbiesWidget.insert(
-          i, _buildButtonColumn(color, hobbiesIcon[i], hobbies[i]));
-    }
-
-    Widget buttonSection = Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: hobbiesWidget,
-    );
-
-    //Text Sectionn
-    Widget textSection = const Padding(
-      padding: EdgeInsets.all(32),
-      child: Text(
-        'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do',
-        softWrap: true,
-      ),
-    );
 
     return MaterialApp(
       title: "About Me",
@@ -67,7 +30,7 @@ class Profile extends StatelessWidget {
               color: Colors.grey,
             ),
             accountName: Text(
-              'Coleen Agsao',
+              'Cole',
               style: TextStyle(
                 fontWeight: FontWeight.bold,
               ),
@@ -104,7 +67,7 @@ class Profile extends StatelessWidget {
             },
           ),
           Divider(),
-          AboutListTile(
+          const AboutListTile(
             icon: Icon(
               Icons.info,
             ),
@@ -133,7 +96,7 @@ class Profile extends StatelessWidget {
               );
             } else if (!snapshot.hasData) {
               return Center(
-                child: Text("No Todos Found"),
+                child: Text("No Users Found."),
               );
             }
 
@@ -189,27 +152,6 @@ class Profile extends StatelessWidget {
           },
         ),
       ),
-    );
-  }
-
-  Column _buildButtonColumn(Color color, IconData icon, String label) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Icon(icon, color: color),
-        Container(
-          margin: const EdgeInsets.only(top: 8),
-          child: Text(
-            label,
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.w400,
-              color: color,
-            ),
-          ),
-        ),
-      ],
     );
   }
 }

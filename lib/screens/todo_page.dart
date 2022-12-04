@@ -7,8 +7,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:week7_networking_discussion/models/todo_model.dart';
-import 'package:week7_networking_discussion/providers/todo_provider.dart';
 import 'package:week7_networking_discussion/providers/auth_provider.dart';
+import 'package:week7_networking_discussion/providers/todo_provider.dart';
 import 'package:week7_networking_discussion/screens/modal_todo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -55,7 +55,7 @@ class _TodoPageState extends State<TodoPage> {
               Navigator.pushNamed(context, '/profile');
             }),
         ListTile(
-            leading: Icon(Icons.heat_pump_rounded),
+            leading: Icon(Icons.people),
             title: const Text('Friends'),
             onTap: () {
               Navigator.pop(context);
@@ -84,7 +84,7 @@ class _TodoPageState extends State<TodoPage> {
         )
       ])),
       appBar: AppBar(
-        title: Text("Shared Todo"),
+        title: Text("Todo"),
       ),
       body: StreamBuilder(
         stream: todosStream,
@@ -126,9 +126,8 @@ class _TodoPageState extends State<TodoPage> {
                   leading: Checkbox(
                     value: todo.completed,
                     onChanged: (bool? value) {
-                      context
-                          .read<TodoListProvider>()
-                          .toggleStatus(index, value!);
+                      context.read<TodoListProvider>().changeSelectedTodo(todo);
+                      context.read<TodoListProvider>().toggleStatus(value!);
                     },
                   ),
                   trailing: Row(
@@ -136,13 +135,15 @@ class _TodoPageState extends State<TodoPage> {
                     children: [
                       IconButton(
                         onPressed: () {
-                          // showDialog(
-                          //   context: context,
-                          //   builder: (BuildContext context) => TodoModal(
-                          //     type: 'Edit',
-                          //     todoIndex: index,
-                          //   ),
-                          // );
+                          context
+                              .read<TodoListProvider>()
+                              .changeSelectedTodo(todo);
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) => TodoModal(
+                              type: 'Edit',
+                            ),
+                          );
                         },
                         icon: const Icon(Icons.create_outlined),
                       ),
@@ -180,6 +181,11 @@ class _TodoPageState extends State<TodoPage> {
         child: const Icon(Icons.add_outlined),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 }
 

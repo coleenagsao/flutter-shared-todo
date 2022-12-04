@@ -1,8 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:week7_networking_discussion/providers/auth_provider.dart';
-import 'package:week7_networking_discussion/providers/user_provider.dart';
 
 class Friends extends StatelessWidget {
   const Friends({super.key});

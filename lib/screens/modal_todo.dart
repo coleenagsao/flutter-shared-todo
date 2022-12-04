@@ -39,9 +39,6 @@ class TodoModal extends StatelessWidget {
 
   // Method to build the content or body depending on the functionality
   Widget _buildContent(BuildContext context) {
-    // Use context.read to get the last updated list of todos
-    // List<Todo> todoItems = context.read<TodoListProvider>().todo;
-
     switch (type) {
       case 'Delete':
         {
@@ -81,8 +78,6 @@ class TodoModal extends StatelessWidget {
   }
 
   TextButton _dialogAction(BuildContext context) {
-    // List<Todo> todoItems = context.read<TodoListProvider>().todo;
-
     return TextButton(
       onPressed: () {
         switch (type) {
@@ -106,16 +101,14 @@ class TodoModal extends StatelessWidget {
               Navigator.of(context).pop();
               break;
             }
-          // case 'Edit':
-          //   {
-          //     context
-          //         .read<TodoListProvider>()
-          //         .editTodo(todoIndex, _formFieldController.text);
+          case 'Edit':
+            {
+              context.read<TodoListProvider>().editTodo(titleController.text);
 
-          //     // Remove dialog after editing
-          //     Navigator.of(context).pop();
-          //     break;
-          //   }
+              // Remove dialog after editing
+              Navigator.of(context).pop();
+              break;
+            }
           case 'Delete':
             {
               context.read<TodoListProvider>().deleteTodo();
