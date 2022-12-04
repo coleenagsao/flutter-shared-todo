@@ -41,42 +41,36 @@ class _FriendsPageState extends State<FriendsPage> {
           itemBuilder: ((context, index) {
             User user = User.fromJson(
                 snapshot.data?.docs[index].data() as Map<String, dynamic>);
-            if (user.userId.toString() !=
-                context.watch<AuthProvider>().userId) {
-              return Container(
-                padding: const EdgeInsets.all(32),
-                child: Row(
+            String currentUserId =
+                Provider.of<AuthProvider>(context, listen: false)
+                    .userId
+                    .toString();
+            if (user.userId.toString() != currentUserId &&
+                !(user.receivedFriendRequests
+                    .any((item) => item.contains(currentUserId)))) {
+              return ListTile(
+                title: Text(
+                  "${user.fname} ${user.lname}",
+                ),
+                leading: IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.person),
+                ),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    Expanded(
-                      /*1*/
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          /*2*/
-                          Container(
-                            padding: const EdgeInsets.only(bottom: 8),
-                            child: Text(
-                              '${user.fname} ${user.lname}',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                          Text(
-                            '@${user.uname}',
-                            style: TextStyle(
-                              color: Colors.grey[500],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    /*3*/
-                    Icon(
-                      Icons.cake_rounded,
-                      color: Colors.blueGrey,
-                    ),
-                    Text('${user.bdate}'),
+                    ElevatedButton(
+                        onPressed: () {
+                          //add current user id to this user's friend request
+                          context
+                              .read<UserListProvider>()
+                              .changeSelectedUser(user);
+                          context
+                              .read<UserListProvider>()
+                              .addFriendRequest(currentUserId);
+                          user.receivedFriendRequests.add(currentUserId);
+                        },
+                        child: Text("Add Friend"))
                   ],
                 ),
               );
@@ -114,20 +108,23 @@ class _FriendsPageState extends State<FriendsPage> {
             title: const Text('User Profile'),
             onTap: () {
               Navigator.pop(context);
+              Navigator.pop(context);
               Navigator.pushNamed(context, '/profile');
             }),
         ListTile(
             leading: Icon(Icons.heat_pump_rounded),
-            title: const Text('Friends'),
+            title: const Text('Todos'),
             onTap: () {
               Navigator.pop(context);
-              Navigator.pushNamed(context, '/friends');
+              Navigator.pop(context);
+              Navigator.pushNamed(context, '/');
             }),
         ListTile(
           leading: Icon(Icons.logout),
           title: const Text('Logout'),
           onTap: () {
             context.read<AuthProvider>().signOut();
+            Navigator.pop(context);
             Navigator.pop(context);
           },
         ),

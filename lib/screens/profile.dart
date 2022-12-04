@@ -49,6 +49,7 @@ class Profile extends StatelessWidget {
               title: const Text('Todos'),
               onTap: () {
                 Navigator.pop(context);
+                Navigator.pop(context);
                 Navigator.pushNamed(context, '/');
               }),
           ListTile(

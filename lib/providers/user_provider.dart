@@ -26,4 +26,11 @@ class UserListProvider with ChangeNotifier {
     _usersStream = firebaseService.getAllUsers();
     notifyListeners();
   }
+
+  void addFriendRequest(String currentUserId) async {
+    String message = await firebaseService.addFriendRequest(
+        currentUserId, _loggedInUser!.userId);
+    print(message);
+    notifyListeners();
+  }
 }
