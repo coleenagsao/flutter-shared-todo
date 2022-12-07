@@ -90,8 +90,7 @@ class _FriendsPageState extends State<FriendsPage> {
                                             child: Text(
                                               '${user.fname} ${user.lname}',
                                               style: TextStyle(
-                                                color: Color.fromARGB(
-                                                    255, 178, 155, 6),
+                                                color: Colors.blue[700],
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.bold,
                                               ),

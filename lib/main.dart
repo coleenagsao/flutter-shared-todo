@@ -55,7 +55,7 @@ class MyApp extends StatelessWidget {
         '/suggestions': (context) => const SuggestionsPage(),
       },
       theme: ThemeData(
-        primarySwatch: Colors.grey,
+        primarySwatch: Colors.blue,
       ),
     );
   }

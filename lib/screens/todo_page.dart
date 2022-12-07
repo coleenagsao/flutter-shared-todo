@@ -30,7 +30,7 @@ class _TodoPageState extends State<TodoPage> {
           child: ListView(padding: EdgeInsets.zero, children: [
         const UserAccountsDrawerHeader(
           decoration: BoxDecoration(
-            color: Colors.grey,
+            color: Colors.blue,
           ),
           accountName: Text(
             'Bridge',
@@ -87,7 +87,6 @@ class _TodoPageState extends State<TodoPage> {
                 }),
           ],
         ),
-        Divider(),
         AboutListTile(
           icon: Icon(
             Icons.info,

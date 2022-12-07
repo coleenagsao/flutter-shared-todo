@@ -15,14 +15,6 @@ class Profile extends StatelessWidget {
 
     return MaterialApp(
       title: "About Me",
-      theme: ThemeData(
-        // Define the default brightness and colors.
-        primaryColor: Colors.grey,
-        fontFamily: 'Helvetica',
-        textTheme: const TextTheme(
-          headline6: TextStyle(fontSize: 20.0),
-        ),
-      ),
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Profile'),
@@ -38,11 +30,11 @@ class Profile extends StatelessWidget {
                 child: Text("Error encountered! ${snapshot.error}"),
               );
             } else if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(
+              return const Center(
                 child: CircularProgressIndicator(),
               );
             } else if (!snapshot.hasData) {
-              return Center(
+              return const Center(
                 child: Text("No Users Found."),
               );
             }
@@ -62,31 +54,52 @@ class Profile extends StatelessWidget {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              /*2*/
                               Container(
                                 padding: const EdgeInsets.only(bottom: 8),
                                 child: Text(
-                                  '${user.fname}',
-                                  style: TextStyle(
+                                  '${user.fname} ${user.lname}',
+                                  style: const TextStyle(
+                                    color: Colors.blue,
+                                    fontSize: 18,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ),
                               Text(
-                                '${user.loc}',
+                                '@${user.uname}',
                                 style: TextStyle(
                                   color: Colors.grey[500],
+                                  fontSize: 16,
                                 ),
                               ),
+                              const Text(" "),
+                              Text(
+                                '${user.bio}',
+                                style: TextStyle(
+                                  color: Colors.grey[500],
+                                  fontSize: 16,
+                                ),
+                              ),
+                              const Text(" "),
+                              const Divider(),
+                              const Text(" "),
+                              Row(children: [
+                                Icon(
+                                  Icons.info_rounded,
+                                  color: Colors.grey[500],
+                                ),
+                                Text(
+                                  '  ${user.userId}',
+                                  style: TextStyle(
+                                    color: Colors.grey[500],
+                                  ),
+                                ),
+                              ]),
+                              _buildInfoBlock(Icons.cake_rounded, user.bdate),
+                              _buildInfoBlock(Icons.location_pin, user.loc)
                             ],
                           ),
                         ),
-                        /*3*/
-                        Icon(
-                          Icons.cake_rounded,
-                          color: Colors.blueGrey,
-                        ),
-                        Text('${user.bdate}'),
                       ],
                     ),
                   );
@@ -100,4 +113,20 @@ class Profile extends StatelessWidget {
       ),
     );
   }
+}
+
+_buildInfoBlock(icon, info) {
+  //temp
+  return Row(children: [
+    Icon(
+      icon,
+      color: Colors.grey[500],
+    ),
+    Text(
+      '  ${info}',
+      style: TextStyle(
+        color: Colors.grey[500],
+      ),
+    ),
+  ]);
 }
