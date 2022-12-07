@@ -46,9 +46,12 @@ class _SuggestionsPageState extends State<SuggestionsPage> {
                     .userId
                     .toString();
             if (user.userId.toString() != currentUserId &&
-                !(user.sentFriendRequests
+                !(user.friends.any((item) => item.contains(currentUserId))) &&
+                !(user.receivedFriendRequests
                     .any((item) => item.contains(currentUserId))) &&
-                !(user.friends.any((item) => item.contains(currentUserId)))) {
+                !(user.friends.any((item) => item.contains(currentUserId))) &&
+                !(user.sentFriendRequests
+                    .any((item) => item.contains(currentUserId)))) {
               return ListTile(
                 title: Text(
                   "${user.fname} ${user.lname}",

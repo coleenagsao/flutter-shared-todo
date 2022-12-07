@@ -80,7 +80,6 @@ class _FriendRequestsPageState extends State<FriendRequestsPage> {
                           context
                               .read<UserListProvider>()
                               .deleteFriendRequest(currentUserId);
-                          user.receivedFriendRequests.add(currentUserId);
                         },
                         child: Text("Delete"))
                   ],

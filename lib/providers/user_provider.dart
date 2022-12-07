@@ -42,8 +42,8 @@ class UserListProvider with ChangeNotifier {
   }
 
   void deleteFriendRequest(String currentUserId) async {
-    String message =
-        await firebaseService.addFriend(currentUserId, _loggedInUser!.userId);
+    String message = await firebaseService.deleteFriendRequest(
+        currentUserId, _loggedInUser!.userId);
     print(message);
     notifyListeners();
   }
