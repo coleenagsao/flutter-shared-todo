@@ -12,6 +12,7 @@ import 'package:week7_networking_discussion/screens/friendRequests_page.dart';
 import 'package:week7_networking_discussion/screens/friends.dart';
 import 'package:week7_networking_discussion/screens/friends_page.dart';
 import 'package:week7_networking_discussion/screens/profile.dart';
+import 'package:week7_networking_discussion/screens/search_page.dart';
 import 'package:week7_networking_discussion/screens/suggestions_page.dart';
 import 'package:week7_networking_discussion/screens/todo_page.dart';
 import 'package:week7_networking_discussion/screens/login.dart';
@@ -53,6 +54,7 @@ class MyApp extends StatelessWidget {
         '/todo': (context) => const TodoPage(),
         '/friendreqs': (context) => const FriendRequestsPage(),
         '/suggestions': (context) => const SuggestionsPage(),
+        '/search': (context) => SearchPage()
       },
       theme: ThemeData(
         primarySwatch: Colors.blue,

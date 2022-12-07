@@ -67,6 +67,12 @@ class _TodoPageState extends State<TodoPage> {
           children: <Widget>[
             ListTile(
                 leading: Icon(Icons.people_outline),
+                title: const Text('Search'),
+                onTap: () {
+                  Navigator.pushNamed(context, '/search');
+                }),
+            ListTile(
+                leading: Icon(Icons.people_outline),
                 title: const Text('Friends'),
                 onTap: () {
                   Navigator.pushNamed(context, '/friends');

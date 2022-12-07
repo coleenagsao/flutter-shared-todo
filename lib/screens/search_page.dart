@@ -39,7 +39,13 @@ class _SearchPageState extends State<SearchPage> {
           ),
         ),
         body: StreamBuilder(
-          stream: usersStream,
+          // stream: usersStream,
+          stream: (name != "")
+              ? FirebaseFirestore.instance
+                  .collection("users")
+                  .where("searchKeywords", arrayContains: name)
+                  .snapshots()
+              : FirebaseFirestore.instance.collection('users').snapshots(),
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return Center(
@@ -60,32 +66,22 @@ class _SearchPageState extends State<SearchPage> {
               itemBuilder: ((context, index) {
                 User user = User.fromJson(
                     snapshot.data?.docs[index].data() as Map<String, dynamic>);
-                String currentUserId =
-                    Provider.of<AuthProvider>(context, listen: false)
-                        .userId
-                        .toString();
-                if (user.userId.toString() != currentUserId &&
-                    (user.friends
-                        .any((item) => item.contains(currentUserId)))) {
-                  return Card(
-                    child: Row(
-                      children: <Widget>[
-                        SizedBox(
-                          width: 25,
+                return Card(
+                  child: Row(
+                    children: <Widget>[
+                      SizedBox(
+                        width: 25,
+                      ),
+                      Text(
+                        '${user.fname} ${user.lname}',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 20,
                         ),
-                        Text(
-                          '${user.fname}',
-                          style: TextStyle(
-                            fontWeight: FontWeight.w700,
-                            fontSize: 20,
-                          ),
-                        ),
-                      ],
-                    ),
-                  );
-                } else {
-                  return Text("");
-                }
+                      ),
+                    ],
+                  ),
+                );
               }),
             );
           },
