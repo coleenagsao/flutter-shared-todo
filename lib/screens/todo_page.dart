@@ -87,7 +87,7 @@ class _TodoPageState extends State<TodoPage> {
                 }),
           ],
         ),
-        AboutListTile(
+        const AboutListTile(
           icon: Icon(
             Icons.info,
           ),

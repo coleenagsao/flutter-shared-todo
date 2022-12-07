@@ -91,10 +91,24 @@ class _SignupPageState extends State<SignupPage> {
       ),
     );
 
+    //generate search keyword possibilities
+    setSearchParam(String caseNumber) {
+      List<String> caseSearchList = [];
+      String temp = "";
+      for (int i = 0; i < caseNumber.length; i++) {
+        temp = temp + caseNumber[i];
+        caseSearchList.add(temp);
+      }
+      return caseSearchList;
+    }
+
     final SignupButton = Padding(
       padding: const EdgeInsets.symmetric(vertical: 16.0),
       child: ElevatedButton(
-        onPressed: () {
+        onPressed: () async {
+          List searchKeywords =
+              setSearchParam('${fnameController.text} ${lnameController.text}');
+
           context.read<AuthProvider>().signUp(
               emailController.text,
               passwordController.text,
@@ -103,7 +117,8 @@ class _SignupPageState extends State<SignupPage> {
               unameController.text,
               dateController.text,
               locController.text,
-              bioController.text);
+              bioController.text,
+              searchKeywords);
           Navigator.pop(context);
         },
         child: const Text('Sign up', style: TextStyle(color: Colors.white)),

@@ -9,6 +9,7 @@ class User {
   String bdate;
   String loc;
   String bio;
+  List? searchKeywords;
   List friends;
   List receivedFriendRequests;
   List sentFriendRequests;
@@ -22,6 +23,7 @@ class User {
       required this.bdate,
       required this.loc,
       required this.bio,
+      this.searchKeywords,
       required this.friends,
       required this.receivedFriendRequests,
       required this.sentFriendRequests});
@@ -37,6 +39,7 @@ class User {
       bdate: json['bdate'],
       loc: json['loc'],
       bio: json['bio'],
+      searchKeywords: json['searchKeywords'],
       friends: json['friends'],
       receivedFriendRequests: json['receivedFriendRequests'],
       sentFriendRequests: json['sentFriendRequests'],
@@ -57,6 +60,7 @@ class User {
       'bdate': user.bdate,
       'loc': user.loc,
       'bio': user.bio,
+      'searchKeywords': user.searchKeywords,
       'friends': user.friends,
       'receivedFriendRequests': user.receivedFriendRequests,
       'sentFriendRequests': user.sentFriendRequests,
