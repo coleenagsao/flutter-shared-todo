@@ -6,7 +6,8 @@ import 'package:week7_networking_discussion/providers/user_provider.dart';
 import 'package:week7_networking_discussion/models/user_model.dart';
 
 class Profile extends StatelessWidget {
-  const Profile({super.key});
+  final String? userId;
+  const Profile({super.key, required this.userId});
 
   @override
   Widget build(BuildContext context) {
@@ -51,8 +52,7 @@ class Profile extends StatelessWidget {
               itemBuilder: ((context, index) {
                 User user = User.fromJson(
                     snapshot.data?.docs[index].data() as Map<String, dynamic>);
-                if (user.userId.toString() ==
-                    context.watch<AuthProvider>().userId) {
+                if (user.userId.toString() == userId) {
                   return Container(
                     padding: const EdgeInsets.all(32),
                     child: Row(

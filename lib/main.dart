@@ -47,7 +47,8 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const AuthWrapper(),
-        '/profile': (context) => const Profile(),
+        '/profile': (context) =>
+            Profile(userId: context.watch<AuthProvider>().userId),
         '/friends': (context) => const FriendsPage(),
         '/todo': (context) => const TodoPage(),
         '/friendreqs': (context) => const FriendRequestsPage(),

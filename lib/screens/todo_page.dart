@@ -69,7 +69,6 @@ class _TodoPageState extends State<TodoPage> {
                 leading: Icon(Icons.people_outline),
                 title: const Text('Friends'),
                 onTap: () {
-                  Navigator.pop(context);
                   Navigator.pushNamed(context, '/friends');
                 }),
             ListTile(

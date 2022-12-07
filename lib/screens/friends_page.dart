@@ -52,7 +52,91 @@ class _FriendsPageState extends State<FriendsPage> {
                   "${user.fname} ${user.lname}",
                 ),
                 leading: IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    showModalBottomSheet(
+                        context: context,
+                        isScrollControlled: true,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(25.0),
+                        ),
+                        builder: (context) {
+                          return FractionallySizedBox(
+                              heightFactor: 0.8,
+                              child: Container(
+                                padding: const EdgeInsets.all(32),
+                                child: Row(
+                                  children: [
+                                    Expanded(
+                                      /*1*/
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                              padding: EdgeInsets.fromLTRB(
+                                                  130, 5, 130, 20),
+                                              child: Container(
+                                                  height: 8.0,
+                                                  width: 100.0,
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.grey[300],
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              8.0)))),
+                                          /*2*/
+                                          Container(
+                                            padding: const EdgeInsets.only(
+                                                bottom: 8),
+                                            child: Text(
+                                              '${user.fname} ${user.lname}',
+                                              style: TextStyle(
+                                                color: Color.fromARGB(
+                                                    255, 178, 155, 6),
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
+                                          Text(
+                                            '@${user.uname}',
+                                            style: TextStyle(
+                                              color: Colors.grey[500],
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                          const Divider(),
+                                          Text(
+                                            '${user.bio}',
+                                            style: TextStyle(
+                                              color: Colors.grey[500],
+                                              fontSize: 16,
+                                            ),
+                                          ),
+                                          const Divider(),
+                                          Row(children: [
+                                            Icon(
+                                              Icons.info_rounded,
+                                              color: Colors.grey[500],
+                                            ),
+                                            Text(
+                                              '  ${user.userId}',
+                                              style: TextStyle(
+                                                color: Colors.grey[500],
+                                              ),
+                                            ),
+                                          ]),
+                                          _buildInfoBlock(
+                                              Icons.cake_rounded, user.bdate),
+                                          _buildInfoBlock(
+                                              Icons.location_pin, user.loc)
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ));
+                        });
+                  },
                   icon: const Icon(Icons.person),
                 ),
                 trailing: Row(
@@ -89,4 +173,20 @@ class _FriendsPageState extends State<FriendsPage> {
         ),
         body: friendsList);
   }
+}
+
+_buildInfoBlock(icon, info) {
+  //temp
+  return Row(children: [
+    Icon(
+      icon,
+      color: Colors.grey[500],
+    ),
+    Text(
+      '  ${info}',
+      style: TextStyle(
+        color: Colors.grey[500],
+      ),
+    ),
+  ]);
 }

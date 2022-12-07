@@ -18,6 +18,7 @@ class _SignupPageState extends State<SignupPage> {
     TextEditingController unameController = TextEditingController();
     TextEditingController dateController = TextEditingController();
     TextEditingController locController = TextEditingController();
+    TextEditingController bioController = TextEditingController();
 
     final fname = TextField(
       controller: fnameController,
@@ -47,6 +48,14 @@ class _SignupPageState extends State<SignupPage> {
       controller: locController,
       decoration: const InputDecoration(
         prefixIcon: Icon(Icons.location_city),
+        hintText: "Location",
+      ),
+    );
+
+    final bio = TextField(
+      controller: bioController,
+      decoration: const InputDecoration(
+        prefixIcon: Icon(Icons.lightbulb),
         hintText: "Location",
       ),
     );
@@ -93,7 +102,8 @@ class _SignupPageState extends State<SignupPage> {
               lnameController.text,
               unameController.text,
               dateController.text,
-              locController.text);
+              locController.text,
+              bioController.text);
           Navigator.pop(context);
         },
         child: const Text('Sign up', style: TextStyle(color: Colors.white)),
