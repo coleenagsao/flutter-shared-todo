@@ -40,8 +40,7 @@ class FirebaseAuthAPI {
       String bio,
       List searchKeywords) async {
     UserCredential credential;
-    
-    
+
     try {
       credential = await auth.createUserWithEmailAndPassword(
         email: email,
