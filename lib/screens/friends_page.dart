@@ -79,7 +79,6 @@ class _FriendsPageState extends State<FriendsPage> {
         );
       },
     );
-
     Widget suggestionsList = StreamBuilder(
       stream: usersStream,
       builder: (context, snapshot) {
@@ -143,7 +142,6 @@ class _FriendsPageState extends State<FriendsPage> {
         );
       },
     );
-
     Widget friendRequestsList = StreamBuilder(
       stream: usersStream,
       builder: (context, snapshot) {
@@ -218,85 +216,36 @@ class _FriendsPageState extends State<FriendsPage> {
         );
       },
     );
+
     return Scaffold(
-      drawer: Drawer(
-          child: ListView(padding: EdgeInsets.zero, children: [
-        const UserAccountsDrawerHeader(
-          decoration: BoxDecoration(
-            color: Colors.grey,
-          ),
-          accountName: Text(
-            'Coleen Agsao',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          accountEmail: Text(
-            "coleenagsao@gmail.com",
-            style: TextStyle(
-              fontWeight: FontWeight.normal,
-              fontStyle: FontStyle.italic,
-            ),
-          ),
-          currentAccountPicture: FlutterLogo(),
-        ),
-        ListTile(
-            leading: Icon(Icons.person),
-            title: const Text('User Profile'),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.pop(context);
-              Navigator.pushNamed(context, '/profile');
-            }),
-        ListTile(
-            leading: Icon(Icons.heat_pump_rounded),
-            title: const Text('Todos'),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.pop(context);
-              Navigator.pushNamed(context, '/');
-            }),
-        ListTile(
-          leading: Icon(Icons.logout),
-          title: const Text('Logout'),
-          onTap: () {
-            context.read<AuthProvider>().signOut();
-            Navigator.pop(context);
-            Navigator.pop(context);
-          },
-        ),
-        Divider(),
-        AboutListTile(
-          icon: Icon(
-            Icons.info,
-          ),
-          child: Text('About App'),
-          applicationIcon: Icon(
-            Icons.local_play,
-          ),
-          applicationName: 'Bridge',
-          applicationVersion: '1.0.0',
-          applicationLegalese: 'CMSC 23 Project 22-23',
-        )
-      ])),
       appBar: AppBar(
         title: Text("Bridgers"),
+        leading: BackButton(onPressed: () {
+          Navigator.pop(context);
+        }),
       ),
       bottomNavigationBar: NavigationBar(
         onDestinationSelected: (int index) {
+          friendsList = rebuildFriends(usersStream, context);
+          friendRequestsList = rebuildFriends(usersStream, context);
+          suggestionsList = rebuildFriends(usersStream, context);
+
           setState(() {
             currentPageIndex = index;
+            friendsList = rebuildFriends(usersStream, context);
+            friendRequestsList = rebuildFriends(usersStream, context);
+            suggestionsList = rebuildFriends(usersStream, context);
           });
         },
         selectedIndex: currentPageIndex,
         destinations: const <Widget>[
           NavigationDestination(
             icon: Icon(Icons.people),
-            label: 'Friends',
+            label: 'Friend Requests',
           ),
           NavigationDestination(
             icon: Icon(Icons.notifications),
-            label: 'Friend Requests',
+            label: 'Friends',
           ),
           NavigationDestination(
             //selectedIcon: Icon(Icons.bookmark),
@@ -306,11 +255,13 @@ class _FriendsPageState extends State<FriendsPage> {
         ],
       ),
       body: <Widget>[
-        Container(alignment: Alignment.center, child: friendsList),
+        Container(
+            alignment: Alignment.center,
+            child: rebuildFriends(usersStream, context)),
         Container(
           color: Colors.green,
           alignment: Alignment.center,
-          child: friendRequestsList,
+          child: rebuildFriends(usersStream, context),
         ),
         Container(
           alignment: Alignment.center,
@@ -319,4 +270,67 @@ class _FriendsPageState extends State<FriendsPage> {
       ][currentPageIndex],
     );
   }
+}
+
+rebuildFriends(Stream<QuerySnapshot> usersStream, BuildContext context) {
+  return StreamBuilder(
+    stream: usersStream,
+    builder: (context, snapshot) {
+      if (snapshot.hasError) {
+        return Center(
+          child: Text("Error encountered! ${snapshot.error}"),
+        );
+      } else if (snapshot.connectionState == ConnectionState.waiting) {
+        return Center(
+          child: CircularProgressIndicator(),
+        );
+      } else if (!snapshot.hasData) {
+        return Center(
+          child: Text("No Users Found."),
+        );
+      }
+
+      return ListView.builder(
+        itemCount: snapshot.data?.docs.length,
+        itemBuilder: ((context, index) {
+          User user = User.fromJson(
+              snapshot.data?.docs[index].data() as Map<String, dynamic>);
+          String currentUserId =
+              Provider.of<AuthProvider>(context, listen: false)
+                  .userId
+                  .toString();
+          if (user.userId.toString() != currentUserId &&
+              (user.friends.any((item) => item.contains(currentUserId)))) {
+            return ListTile(
+              title: Text(
+                "${user.fname} ${user.lname}",
+              ),
+              leading: IconButton(
+                onPressed: () {},
+                icon: const Icon(Icons.person),
+              ),
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  ElevatedButton(
+                      onPressed: () {
+                        //add current user id to this user's friend request
+                        context
+                            .read<UserListProvider>()
+                            .changeSelectedUser(user);
+                        context
+                            .read<UserListProvider>()
+                            .unfriend(currentUserId);
+                      },
+                      child: Text("Unfriend"))
+                ],
+              ),
+            );
+          } else {
+            return Text("");
+          }
+        }),
+      );
+    },
+  );
 }
