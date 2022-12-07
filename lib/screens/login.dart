@@ -65,7 +65,7 @@ class _LoginPageState extends State<LoginPage> {
         child: ListView(
           shrinkWrap: true,
           padding: const EdgeInsets.only(
-              bottom: 40, top: 40.0, left: 40.0, right: 40.0),
+              bottom: 40, top: 100.0, left: 40.0, right: 40.0),
           children: <Widget>[
             const Text(
               "LOG IN TO BRIDGE",

@@ -56,7 +56,7 @@ class _SignupPageState extends State<SignupPage> {
       controller: bioController,
       decoration: const InputDecoration(
         prefixIcon: Icon(Icons.lightbulb),
-        hintText: "Location",
+        hintText: "Bio",
       ),
     );
 
@@ -129,7 +129,7 @@ class _SignupPageState extends State<SignupPage> {
         child: ListView(
           shrinkWrap: true,
           padding: const EdgeInsets.only(
-              bottom: 40, top: 40.0, left: 40.0, right: 40.0),
+              bottom: 40, top: 100.0, left: 40.0, right: 40.0),
           children: <Widget>[
             const Text(
               "SIGN UP TO BRIDGE",
@@ -140,13 +140,14 @@ class _SignupPageState extends State<SignupPage> {
               ),
             ),
             Image.asset(
-              'images/login.jpg',
+              'assets/images/login.jpg',
               width: 600,
               height: 400,
             ),
             fname,
             lname,
             uname,
+            bio,
             bdate,
             loc,
             email,
