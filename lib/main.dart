@@ -8,9 +8,11 @@ import 'package:provider/provider.dart';
 import 'package:week7_networking_discussion/providers/todo_provider.dart';
 import 'package:week7_networking_discussion/providers/auth_provider.dart';
 import 'package:week7_networking_discussion/providers/user_provider.dart';
+import 'package:week7_networking_discussion/screens/friendRequests_page.dart';
 import 'package:week7_networking_discussion/screens/friends.dart';
 import 'package:week7_networking_discussion/screens/friends_page.dart';
 import 'package:week7_networking_discussion/screens/profile.dart';
+import 'package:week7_networking_discussion/screens/suggestions_page.dart';
 import 'package:week7_networking_discussion/screens/todo_page.dart';
 import 'package:week7_networking_discussion/screens/login.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -47,7 +49,9 @@ class MyApp extends StatelessWidget {
         '/': (context) => const AuthWrapper(),
         '/profile': (context) => const Profile(),
         '/friends': (context) => const FriendsPage(),
-        '/todo': (context) => const TodoPage()
+        '/todo': (context) => const TodoPage(),
+        '/friendreqs': (context) => const FriendRequestsPage(),
+        '/suggestions': (context) => const SuggestionsPage(),
       },
       theme: ThemeData(
         primarySwatch: Colors.grey,

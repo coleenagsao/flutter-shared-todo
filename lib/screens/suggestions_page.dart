@@ -5,21 +5,21 @@ import 'package:week7_networking_discussion/providers/auth_provider.dart';
 import 'package:week7_networking_discussion/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
-class FriendsPage extends StatefulWidget {
-  const FriendsPage({super.key});
+class SuggestionsPage extends StatefulWidget {
+  const SuggestionsPage({super.key});
 
   @override
-  State<FriendsPage> createState() => _FriendsPageState();
+  State<SuggestionsPage> createState() => _SuggestionsPageState();
 }
 
-class _FriendsPageState extends State<FriendsPage> {
+class _SuggestionsPageState extends State<SuggestionsPage> {
   int currentPageIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     Stream<QuerySnapshot> usersStream = context.watch<UserListProvider>().users;
 
-    Widget friendsList = StreamBuilder(
+    Widget suggestionsList = StreamBuilder(
       stream: usersStream,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
@@ -46,7 +46,9 @@ class _FriendsPageState extends State<FriendsPage> {
                     .userId
                     .toString();
             if (user.userId.toString() != currentUserId &&
-                (user.friends.any((item) => item.contains(currentUserId)))) {
+                !(user.sentFriendRequests
+                    .any((item) => item.contains(currentUserId))) &&
+                !(user.friends.any((item) => item.contains(currentUserId)))) {
               return ListTile(
                 title: Text(
                   "${user.fname} ${user.lname}",
@@ -66,14 +68,15 @@ class _FriendsPageState extends State<FriendsPage> {
                               .changeSelectedUser(user);
                           context
                               .read<UserListProvider>()
-                              .unfriend(currentUserId);
+                              .addFriendRequest(currentUserId);
+                          user.receivedFriendRequests.add(currentUserId);
                         },
-                        child: Text("Unfriend"))
+                        child: Text("Add Friend"))
                   ],
                 ),
               );
             } else {
-              return Text("");
+              return Text(" ");
             }
           }),
         );
@@ -82,11 +85,11 @@ class _FriendsPageState extends State<FriendsPage> {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text("Friends"),
+          title: Text("People you may know"),
           leading: BackButton(onPressed: () {
             Navigator.pop(context);
           }),
         ),
-        body: friendsList);
+        body: suggestionsList);
   }
 }

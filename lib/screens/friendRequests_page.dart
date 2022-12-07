@@ -5,21 +5,21 @@ import 'package:week7_networking_discussion/providers/auth_provider.dart';
 import 'package:week7_networking_discussion/providers/user_provider.dart';
 import 'package:provider/provider.dart';
 
-class FriendsPage extends StatefulWidget {
-  const FriendsPage({super.key});
+class FriendRequestsPage extends StatefulWidget {
+  const FriendRequestsPage({super.key});
 
   @override
-  State<FriendsPage> createState() => _FriendsPageState();
+  State<FriendRequestsPage> createState() => _FriendRequestsPageState();
 }
 
-class _FriendsPageState extends State<FriendsPage> {
+class _FriendRequestsPageState extends State<FriendRequestsPage> {
   int currentPageIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     Stream<QuerySnapshot> usersStream = context.watch<UserListProvider>().users;
 
-    Widget friendsList = StreamBuilder(
+    Widget friendRequestsList = StreamBuilder(
       stream: usersStream,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
@@ -46,7 +46,8 @@ class _FriendsPageState extends State<FriendsPage> {
                     .userId
                     .toString();
             if (user.userId.toString() != currentUserId &&
-                (user.friends.any((item) => item.contains(currentUserId)))) {
+                (user.sentFriendRequests
+                    .any((item) => item.contains(currentUserId)))) {
               return ListTile(
                 title: Text(
                   "${user.fname} ${user.lname}",
@@ -60,20 +61,33 @@ class _FriendsPageState extends State<FriendsPage> {
                   children: [
                     ElevatedButton(
                         onPressed: () {
+                          //add both to friends list, then remove in received and sent friend requests
+                          context
+                              .read<UserListProvider>()
+                              .changeSelectedUser(user);
+                          context
+                              .read<UserListProvider>()
+                              .addFriend(currentUserId);
+                        },
+                        child: Text("Confirm")),
+                    Text("  "),
+                    ElevatedButton(
+                        onPressed: () {
                           //add current user id to this user's friend request
                           context
                               .read<UserListProvider>()
                               .changeSelectedUser(user);
                           context
                               .read<UserListProvider>()
-                              .unfriend(currentUserId);
+                              .deleteFriendRequest(currentUserId);
+                          user.receivedFriendRequests.add(currentUserId);
                         },
-                        child: Text("Unfriend"))
+                        child: Text("Delete"))
                   ],
                 ),
               );
             } else {
-              return Text("");
+              return Text(" ");
             }
           }),
         );
@@ -82,11 +96,11 @@ class _FriendsPageState extends State<FriendsPage> {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text("Friends"),
+          title: Text("Bridgers requests"),
           leading: BackButton(onPressed: () {
             Navigator.pop(context);
           }),
         ),
-        body: friendsList);
+        body: friendRequestsList);
   }
 }

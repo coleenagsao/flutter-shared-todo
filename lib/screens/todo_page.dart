@@ -33,13 +33,13 @@ class _TodoPageState extends State<TodoPage> {
             color: Colors.grey,
           ),
           accountName: Text(
-            'Coleen Agsao',
+            'Bridge',
             style: TextStyle(
               fontWeight: FontWeight.bold,
             ),
           ),
           accountEmail: Text(
-            "coleenagsao@gmail.com",
+            "Connect your todo with others",
             style: TextStyle(
               fontWeight: FontWeight.normal,
               fontStyle: FontStyle.italic,
@@ -48,18 +48,11 @@ class _TodoPageState extends State<TodoPage> {
           currentAccountPicture: FlutterLogo(),
         ),
         ListTile(
-            leading: Icon(Icons.person),
+            leading: Icon(Icons.person_outline),
             title: const Text('User Profile'),
             onTap: () {
               Navigator.pop(context);
               Navigator.pushNamed(context, '/profile');
-            }),
-        ListTile(
-            leading: Icon(Icons.people),
-            title: const Text('Friends'),
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.pushNamed(context, '/friends');
             }),
         ListTile(
           leading: Icon(Icons.logout),
@@ -68,6 +61,32 @@ class _TodoPageState extends State<TodoPage> {
             context.read<AuthProvider>().signOut();
             Navigator.pop(context);
           },
+        ),
+        ExpansionTile(
+          title: Text("Friends"),
+          children: <Widget>[
+            ListTile(
+                leading: Icon(Icons.people_outline),
+                title: const Text('Friends'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/friends');
+                }),
+            ListTile(
+                leading: Icon(Icons.inbox_outlined),
+                title: const Text('Friend requests'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/friendreqs');
+                }),
+            ListTile(
+                leading: Icon(Icons.outbox_outlined),
+                title: const Text('People you may know'),
+                onTap: () {
+                  Navigator.pop(context);
+                  Navigator.pushNamed(context, '/suggestions');
+                }),
+          ],
         ),
         Divider(),
         AboutListTile(
