@@ -44,6 +44,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Bridge',
       initialRoute: '/',
       routes: {
@@ -56,9 +57,7 @@ class MyApp extends StatelessWidget {
         '/suggestions': (context) => const SuggestionsPage(),
         '/search': (context) => SearchPage()
       },
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: ThemeData(primarySwatch: Colors.blue, fontFamily: 'Helvetica'),
     );
   }
 }
