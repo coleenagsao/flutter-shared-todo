@@ -11,6 +11,7 @@ import 'dart:core';
 import 'package:week7_networking_discussion/models/todo_model.dart';
 import 'package:week7_networking_discussion/providers/auth_provider.dart';
 import 'package:week7_networking_discussion/providers/todo_provider.dart';
+import 'package:week7_networking_discussion/providers/user_provider.dart';
 import 'package:week7_networking_discussion/screens/modal_todo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -26,6 +27,7 @@ class _TodoPageState extends State<TodoPage> {
   Widget build(BuildContext context) {
     // access the list of todos in the provider
     Stream<QuerySnapshot> todosStream = context.watch<TodoListProvider>().todos;
+    // Stream<QuerySnapshot> userStream = context.watch<UserListProvider>().user;
 
     return Scaffold(
       drawer: Drawer(
@@ -191,14 +193,32 @@ class _TodoPageState extends State<TodoPage> {
                 itemBuilder: ((context, index) {
                   Todo todo = Todo.fromJson(snapshot.data?.docs[index].data()
                       as Map<String, dynamic>);
+                  String currentUserId =
+                      Provider.of<AuthProvider>(context, listen: false)
+                          .userId
+                          .toString();
                   return Container(
                     padding: EdgeInsets.only(top: 20),
                     child: ListTile(
-                      title: Text(todo.title,
-                          style: TextStyle(
-                              fontSize: 18,
-                              // fontWeight: FontWeight.bold,
-                              color: Colors.white)),
+                      title: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(todo.title,
+                                style: TextStyle(
+                                    fontSize: 18,
+                                    // fontWeight: FontWeight.bold,
+                                    color: Colors.white)),
+                            Row(
+                              children: [
+                                Icon(CupertinoIcons.person, color: Colors.grey),
+                                Text(todo.userId,
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        // fontWeight: FontWeight.bold,
+                                        color: Colors.grey))
+                              ],
+                            )
+                          ]),
                       leading: Checkbox(
                         value: todo.completed,
                         onChanged: (bool? value) {
@@ -230,15 +250,22 @@ class _TodoPageState extends State<TodoPage> {
                           ),
                           IconButton(
                             onPressed: () {
-                              context
-                                  .read<TodoListProvider>()
-                                  .changeSelectedTodo(todo);
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) => TodoModal(
-                                  type: 'Delete',
-                                ),
-                              );
+                              if (todo.userId == currentUserId) {
+                                //only user can delete
+                                context
+                                    .read<TodoListProvider>()
+                                    .changeSelectedTodo(todo);
+                                showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) => TodoModal(
+                                    type: 'Delete',
+                                  ),
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                    content: Text(
+                                        'You can only delete your own tasks.')));
+                              }
                             },
                             icon: Icon(CupertinoIcons.delete_solid,
                                 color: Colors.blue),
@@ -273,4 +300,3 @@ class _TodoPageState extends State<TodoPage> {
 
 //References:
 // https://blog.logrocket.com/how-to-add-navigation-drawer-flutter/
-

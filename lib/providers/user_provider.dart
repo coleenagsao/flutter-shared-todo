@@ -6,6 +6,7 @@ import 'package:week7_networking_discussion/models/user_model.dart';
 class UserListProvider with ChangeNotifier {
   late FirebaseUserAPI firebaseService;
   late Stream<QuerySnapshot> _usersStream;
+  late Stream<QuerySnapshot> _userStream;
   User? _loggedInUser;
 
   UserListProvider() {
@@ -15,6 +16,7 @@ class UserListProvider with ChangeNotifier {
 
   // getter
   Stream<QuerySnapshot> get users => _usersStream;
+  // Stream<QuerySnapshot> get user() => _userStream;
 
   User get selected => _loggedInUser!;
 
@@ -26,6 +28,11 @@ class UserListProvider with ChangeNotifier {
     _usersStream = firebaseService.getAllUsers();
     notifyListeners();
   }
+
+  // void fetchUser(String userId) async {
+  //   _usersStream = await firebaseService.getUser(userId);
+  //   notifyListeners();
+  // }
 
   void addFriendRequest(String currentUserId) async {
     String message = await firebaseService.addFriendRequest(
