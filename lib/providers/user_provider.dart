@@ -8,6 +8,7 @@ class UserListProvider with ChangeNotifier {
   late Stream<QuerySnapshot> _usersStream;
   late Stream<QuerySnapshot> _userStream;
   User? _loggedInUser;
+  User? _selectedUser;
 
   UserListProvider() {
     firebaseService = FirebaseUserAPI();
@@ -22,6 +23,10 @@ class UserListProvider with ChangeNotifier {
 
   changeSelectedUser(User item) {
     _loggedInUser = item;
+  }
+
+  changeSelectedFriend(User item) {
+    _selectedUser = item;
   }
 
   void fetchUsers() {

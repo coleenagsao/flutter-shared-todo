@@ -7,8 +7,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:week7_networking_discussion/api/firebase_user_api.dart';
 import 'dart:core';
 import 'package:week7_networking_discussion/models/todo_model.dart';
+import 'package:week7_networking_discussion/models/user_model.dart';
 import 'package:week7_networking_discussion/providers/auth_provider.dart';
 import 'package:week7_networking_discussion/providers/todo_provider.dart';
 import 'package:week7_networking_discussion/providers/user_provider.dart';
@@ -27,7 +29,7 @@ class _TodoPageState extends State<TodoPage> {
   Widget build(BuildContext context) {
     // access the list of todos in the provider
     Stream<QuerySnapshot> todosStream = context.watch<TodoListProvider>().todos;
-    // Stream<QuerySnapshot> userStream = context.watch<UserListProvider>().user;
+    Stream<QuerySnapshot> userStream = context.watch<UserListProvider>().users;
 
     return Scaffold(
       drawer: Drawer(
@@ -197,83 +199,95 @@ class _TodoPageState extends State<TodoPage> {
                       Provider.of<AuthProvider>(context, listen: false)
                           .userId
                           .toString();
-                  return Container(
-                    padding: EdgeInsets.only(top: 20),
-                    child: ListTile(
-                      title: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+
+                  //get friends of user
+
+                  if (todo.userId == currentUserId) {
+                    return Container(
+                      padding: EdgeInsets.only(top: 20),
+                      child: ListTile(
+                        title: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(todo.title,
+                                  style: TextStyle(
+                                      fontSize: 18,
+                                      // fontWeight: FontWeight.bold,
+                                      color: Colors.white)),
+                              Row(
+                                children: [
+                                  Icon(CupertinoIcons.person,
+                                      color: Colors.grey),
+                                  Text(todo.userId,
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          // fontWeight: FontWeight.bold,
+                                          color: Colors.grey))
+                                ],
+                              )
+                            ]),
+                        leading: Checkbox(
+                          value: todo.completed,
+                          onChanged: (bool? value) {
+                            context
+                                .read<TodoListProvider>()
+                                .changeSelectedTodo(todo);
+                            context
+                                .read<TodoListProvider>()
+                                .toggleStatus(value!);
+                          },
+                        ),
+                        trailing: Row(
+                          mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text(todo.title,
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    // fontWeight: FontWeight.bold,
-                                    color: Colors.white)),
-                            Row(
-                              children: [
-                                Icon(CupertinoIcons.person, color: Colors.grey),
-                                Text(todo.userId,
-                                    style: TextStyle(
-                                        fontSize: 14,
-                                        // fontWeight: FontWeight.bold,
-                                        color: Colors.grey))
-                              ],
-                            )
-                          ]),
-                      leading: Checkbox(
-                        value: todo.completed,
-                        onChanged: (bool? value) {
-                          context
-                              .read<TodoListProvider>()
-                              .changeSelectedTodo(todo);
-                          context.read<TodoListProvider>().toggleStatus(value!);
-                        },
-                      ),
-                      trailing: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          IconButton(
-                            onPressed: () {
-                              context
-                                  .read<TodoListProvider>()
-                                  .changeSelectedTodo(todo);
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) => TodoModal(
-                                  type: 'Edit',
-                                ),
-                              );
-                            },
-                            icon: Icon(
-                              CupertinoIcons.pencil,
-                              color: Colors.blue,
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () {
-                              if (todo.userId == currentUserId) {
-                                //only user can delete
+                            IconButton(
+                              onPressed: () {
                                 context
                                     .read<TodoListProvider>()
                                     .changeSelectedTodo(todo);
                                 showDialog(
                                   context: context,
                                   builder: (BuildContext context) => TodoModal(
-                                    type: 'Delete',
+                                    type: 'Edit',
                                   ),
                                 );
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                                    content: Text(
-                                        'You can only delete your own tasks.')));
-                              }
-                            },
-                            icon: Icon(CupertinoIcons.delete_solid,
-                                color: Colors.blue),
-                          )
-                        ],
+                              },
+                              icon: Icon(
+                                CupertinoIcons.pencil,
+                                color: Colors.blue,
+                              ),
+                            ),
+                            IconButton(
+                              onPressed: () {
+                                if (todo.userId == currentUserId) {
+                                  //only user can delete
+                                  context
+                                      .read<TodoListProvider>()
+                                      .changeSelectedTodo(todo);
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) =>
+                                        TodoModal(
+                                      type: 'Delete',
+                                    ),
+                                  );
+                                } else {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                          content: Text(
+                                              'You can only delete your own tasks.')));
+                                }
+                              },
+                              icon: Icon(CupertinoIcons.delete_solid,
+                                  color: Colors.blue),
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                  );
+                    );
+                  } else {
+                    return const Text(" ");
+                  }
                 }),
               );
             },
@@ -300,3 +314,4 @@ class _TodoPageState extends State<TodoPage> {
 
 //References:
 // https://blog.logrocket.com/how-to-add-navigation-drawer-flutter/
+

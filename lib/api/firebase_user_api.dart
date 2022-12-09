@@ -7,6 +7,13 @@ class FirebaseUserAPI {
     return db.collection("users").snapshots();
   }
 
+  Future<QuerySnapshot> getUser(userid) async {
+    QuerySnapshot data =
+        await db.collection('users').where('userId', isEqualTo: userid).get();
+
+    return data;
+  }
+
   Future<String> addFriendRequest(String currentUserId, String? userId) async {
     try {
       print("Current User: $userId");
