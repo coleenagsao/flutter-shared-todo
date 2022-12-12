@@ -4,11 +4,15 @@
   Description: Sample todo app with networking
 */
 
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:week7_networking_discussion/api/firebase_todo_api.dart';
 import 'dart:core';
 import 'package:week7_networking_discussion/models/todo_model.dart';
+import 'package:week7_networking_discussion/models/user_model.dart';
 import 'package:week7_networking_discussion/providers/auth_provider.dart';
 import 'package:week7_networking_discussion/providers/todo_provider.dart';
 import 'package:week7_networking_discussion/providers/user_provider.dart';
@@ -31,8 +35,251 @@ class _TodoPageState extends State<TodoPage> {
     Stream<QuerySnapshot> todosStream = context.watch<TodoListProvider>().todos;
     Stream<QuerySnapshot> userStream = context.watch<UserListProvider>().users;
 
-    Widget myTasks = Text("My Tasks");
-    Widget friendsTasks = Text("Friends' Tasks");
+    Widget myTasks = StreamBuilder(
+      stream: FirebaseFirestore.instance.collection("todos").snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+            child: Text("Error encountered! ${snapshot.error}"),
+          );
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (!snapshot.hasData) {
+          return Center(
+            child: Text("No Todos Found"),
+          );
+        }
+
+        return ListView.builder(
+          itemCount: snapshot.data?.docs.length,
+          itemBuilder: ((context, index) {
+            Todo todo = Todo.fromJson(
+                snapshot.data?.docs[index].data() as Map<String, dynamic>);
+            String currentUserId =
+                Provider.of<AuthProvider>(context, listen: false)
+                    .userId
+                    .toString();
+
+            if (todo.userId == currentUserId) {
+              return Container(
+                padding: EdgeInsets.only(top: 20),
+                child: ListTile(
+                  title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(todo.title,
+                            style: TextStyle(
+                                fontSize: 18,
+                                // fontWeight: FontWeight.bold,
+                                color: Colors.white)),
+                        Row(
+                          children: [
+                            Icon(CupertinoIcons.person, color: Colors.grey),
+                            Text(todo.userId,
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    // fontWeight: FontWeight.bold,
+                                    color: Colors.grey))
+                          ],
+                        )
+                      ]),
+                  leading: Checkbox(
+                    value: todo.completed,
+                    onChanged: (bool? value) {
+                      context.read<TodoListProvider>().changeSelectedTodo(todo);
+                      context.read<TodoListProvider>().toggleStatus(value!);
+                    },
+                  ),
+                  trailing: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          context
+                              .read<TodoListProvider>()
+                              .changeSelectedTodo(todo);
+                          showDialog(
+                            context: context,
+                            builder: (BuildContext context) => TodoModal(
+                              type: 'Edit',
+                            ),
+                          );
+                        },
+                        icon: Icon(
+                          CupertinoIcons.pencil,
+                          color: Colors.blue,
+                        ),
+                      ),
+                      IconButton(
+                        onPressed: () {
+                          if (todo.userId == currentUserId) {
+                            //only user can delete
+                            context
+                                .read<TodoListProvider>()
+                                .changeSelectedTodo(todo);
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) => TodoModal(
+                                type: 'Delete',
+                              ),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                content: Text(
+                                    'You can only delete your own tasks.')));
+                          }
+                        },
+                        icon: Icon(CupertinoIcons.delete_solid,
+                            color: Colors.blue),
+                      )
+                    ],
+                  ),
+                ),
+              );
+            } else {
+              return const Text(" ");
+            }
+          }),
+        );
+      },
+    );
+
+    //Widget myTasks = Text("Friends");
+    Widget friendsTasks = StreamBuilder(
+      stream: FirebaseFirestore.instance.collection("users").snapshots(),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+            child: Text("Error encountered! ${snapshot.error}"),
+          );
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (!snapshot.hasData) {
+          return Center(
+            child: Text("No Todos Found"),
+          );
+        }
+
+        return ListView.builder(
+          itemCount: snapshot.data?.docs.length,
+          itemBuilder: ((context, index) {
+            User user = User.fromJson(
+                snapshot.data?.docs[index].data() as Map<String, dynamic>);
+            String currentUserId =
+                Provider.of<AuthProvider>(context, listen: false)
+                    .userId
+                    .toString();
+
+            if (user.userId == currentUserId) {
+              return StreamBuilder(
+                stream:
+                    FirebaseFirestore.instance.collection("todos").snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) {
+                    return Center(
+                      child: Text("Error encountered! ${snapshot.error}"),
+                    );
+                  } else if (snapshot.connectionState ==
+                      ConnectionState.waiting) {
+                    return Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (!snapshot.hasData) {
+                    return Center(
+                      child: Text("No Todos Found"),
+                    );
+                  }
+
+                  return ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: snapshot.data?.docs.length,
+                    itemBuilder: ((context, index) {
+                      Todo todo = Todo.fromJson(snapshot.data?.docs[index]
+                          .data() as Map<String, dynamic>);
+                      String currentUserId =
+                          Provider.of<AuthProvider>(context, listen: false)
+                              .userId
+                              .toString();
+
+                      if (user.friends
+                          .any((item) => item.contains(todo.userId))) {
+                        return Container(
+                          padding: EdgeInsets.only(top: 20),
+                          child: ListTile(
+                            title: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(todo.title,
+                                      style: TextStyle(
+                                          fontSize: 18,
+                                          // fontWeight: FontWeight.bold,
+                                          color: Colors.white)),
+                                  Row(
+                                    children: [
+                                      Icon(CupertinoIcons.person,
+                                          color: Colors.grey),
+                                      Text(todo.userId,
+                                          style: TextStyle(
+                                              fontSize: 14,
+                                              // fontWeight: FontWeight.bold,
+                                              color: Colors.grey))
+                                    ],
+                                  )
+                                ]),
+                            leading: Checkbox(
+                              value: todo.completed,
+                              onChanged: (bool? value) {
+                                context
+                                    .read<TodoListProvider>()
+                                    .changeSelectedTodo(todo);
+                                context
+                                    .read<TodoListProvider>()
+                                    .toggleStatus(value!);
+                              },
+                            ),
+                            trailing: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    context
+                                        .read<TodoListProvider>()
+                                        .changeSelectedTodo(todo);
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                          TodoModal(
+                                        type: 'Edit',
+                                      ),
+                                    );
+                                  },
+                                  icon: Icon(
+                                    CupertinoIcons.pencil,
+                                    color: Colors.blue,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      } else {
+                        return const Text("");
+                      }
+                    }),
+                  );
+                },
+              );
+            } else {
+              return const Text(" ");
+            }
+          }),
+        );
+      },
+    );
 
     return Scaffold(
       drawer: Drawer(
@@ -142,33 +389,32 @@ class _TodoPageState extends State<TodoPage> {
         ],
       ),
       body: <Widget>[
-        Container(alignment: Alignment.center, child: myTasks),
         Container(
-          color: Colors.green,
+            alignment: Alignment.center,
+            color: Color(0xff30384c),
+            child: myTasks),
+        Container(
+          color: Color(0xff30384c),
           alignment: Alignment.center,
           child: friendsTasks,
         ),
       ][currentPageIndex],
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showDialog(
-            context: context,
-            builder: (BuildContext context) => TodoModal(
-              type: 'Add',
-            ),
-          );
-        },
-        child: const Icon(Icons.add_outlined),
-      ),
+      floatingActionButton: currentPageIndex == 0
+          ? FloatingActionButton(
+              onPressed: () {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) => TodoModal(
+                    type: 'Add',
+                  ),
+                );
+              },
+              child: const Icon(Icons.add_outlined),
+            )
+          : null,
     );
   }
 }
-
-
-
-
-
-
 
 
 //References:

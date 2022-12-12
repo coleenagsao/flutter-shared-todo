@@ -6,7 +6,6 @@ import 'package:week7_networking_discussion/models/user_model.dart';
 class UserListProvider with ChangeNotifier {
   late FirebaseUserAPI firebaseService;
   late Stream<QuerySnapshot> _usersStream;
-  late Stream<QuerySnapshot> _userStream;
   User? _loggedInUser;
   User? _selectedUser;
 
