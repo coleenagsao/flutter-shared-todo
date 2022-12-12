@@ -76,8 +76,9 @@ class _TodoPageState extends State<TodoPage> {
                                 color: Colors.white)),
                         Row(
                           children: [
-                            Icon(CupertinoIcons.person, color: Colors.grey),
-                            Text(todo.userId,
+                            Icon(CupertinoIcons.person_alt_circle,
+                                color: Colors.blue),
+                            Text(" ${todo.userId}",
                                 style: TextStyle(
                                     fontSize: 14,
                                     // fontWeight: FontWeight.bold,
@@ -130,7 +131,7 @@ class _TodoPageState extends State<TodoPage> {
                           );
                         },
                         icon: Icon(
-                          CupertinoIcons.pencil,
+                          CupertinoIcons.pencil_circle,
                           color: Colors.blue,
                         ),
                       ),
@@ -153,7 +154,7 @@ class _TodoPageState extends State<TodoPage> {
                                     'You can only delete your own tasks.')));
                           }
                         },
-                        icon: Icon(CupertinoIcons.delete_solid,
+                        icon: Icon(CupertinoIcons.delete_left,
                             color: Colors.blue),
                       )
                     ],
@@ -195,7 +196,6 @@ class _TodoPageState extends State<TodoPage> {
                 Provider.of<AuthProvider>(context, listen: false)
                     .userId
                     .toString();
-
             if (user.userId == currentUserId) {
               return StreamBuilder(
                 stream:
@@ -242,9 +242,9 @@ class _TodoPageState extends State<TodoPage> {
                                           color: Colors.white)),
                                   Row(
                                     children: [
-                                      Icon(CupertinoIcons.person,
-                                          color: Colors.grey),
-                                      Text(todo.userId,
+                                      Icon(CupertinoIcons.person_alt_circle,
+                                          color: Colors.blue),
+                                      Text(" ${todo.userId}",
                                           style: TextStyle(
                                               fontSize: 14,
                                               // fontWeight: FontWeight.bold,
@@ -278,7 +278,7 @@ class _TodoPageState extends State<TodoPage> {
                                     );
                                   },
                                   icon: Icon(
-                                    CupertinoIcons.pencil,
+                                    CupertinoIcons.pencil_circle,
                                     color: Colors.blue,
                                   ),
                                 ),
@@ -331,7 +331,7 @@ class _TodoPageState extends State<TodoPage> {
               Navigator.pushNamed(context, '/profile');
             }),
         ListTile(
-          leading: Icon(Icons.logout),
+          leading: Icon(CupertinoIcons.eject),
           title: const Text('Logout'),
           onTap: () {
             context.read<AuthProvider>().signOut();
@@ -342,26 +342,26 @@ class _TodoPageState extends State<TodoPage> {
           title: Text("Friends"),
           children: <Widget>[
             ListTile(
-                leading: Icon(Icons.search_outlined),
+                leading: Icon(CupertinoIcons.search),
                 title: const Text('Search'),
                 onTap: () {
                   Navigator.pushNamed(context, '/search');
                 }),
             ListTile(
-                leading: Icon(Icons.people_outline),
+                leading: Icon(CupertinoIcons.person_3),
                 title: const Text('Friends'),
                 onTap: () {
                   Navigator.pushNamed(context, '/friends');
                 }),
             ListTile(
-                leading: Icon(Icons.inbox_outlined),
+                leading: Icon(CupertinoIcons.flag),
                 title: const Text('Friend requests'),
                 onTap: () {
                   Navigator.pop(context);
                   Navigator.pushNamed(context, '/friendreqs');
                 }),
             ListTile(
-                leading: Icon(Icons.outbox_outlined),
+                leading: Icon(CupertinoIcons.link),
                 title: const Text('People you may know'),
                 onTap: () {
                   Navigator.pop(context);
@@ -371,11 +371,11 @@ class _TodoPageState extends State<TodoPage> {
         ),
         const AboutListTile(
           icon: Icon(
-            Icons.info,
+            CupertinoIcons.info_circle,
           ),
           child: Text('About App'),
           applicationIcon: Icon(
-            Icons.local_play,
+            CupertinoIcons.info_circle,
           ),
           applicationName: 'Bridge',
           applicationVersion: '1.0.0',
@@ -399,11 +399,11 @@ class _TodoPageState extends State<TodoPage> {
         selectedIndex: currentPageIndex,
         destinations: const <Widget>[
           NavigationDestination(
-            icon: Icon(Icons.home),
+            icon: Icon(CupertinoIcons.home),
             label: 'Home',
           ),
           NavigationDestination(
-            icon: Icon(Icons.notifications),
+            icon: Icon(CupertinoIcons.person_2_square_stack),
             label: 'Feed',
           ),
         ],
@@ -429,7 +429,7 @@ class _TodoPageState extends State<TodoPage> {
                   ),
                 );
               },
-              child: const Icon(Icons.add_outlined),
+              child: const Icon(CupertinoIcons.add),
             )
           : null,
     );
