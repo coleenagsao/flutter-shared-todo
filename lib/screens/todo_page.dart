@@ -7,10 +7,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:week7_networking_discussion/api/firebase_user_api.dart';
 import 'dart:core';
 import 'package:week7_networking_discussion/models/todo_model.dart';
-import 'package:week7_networking_discussion/models/user_model.dart';
 import 'package:week7_networking_discussion/providers/auth_provider.dart';
 import 'package:week7_networking_discussion/providers/todo_provider.dart';
 import 'package:week7_networking_discussion/providers/user_provider.dart';
@@ -25,11 +23,16 @@ class TodoPage extends StatefulWidget {
 }
 
 class _TodoPageState extends State<TodoPage> {
+  int currentPageIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     // access the list of todos in the provider
     Stream<QuerySnapshot> todosStream = context.watch<TodoListProvider>().todos;
     Stream<QuerySnapshot> userStream = context.watch<UserListProvider>().users;
+
+    Widget myTasks = Text("My Tasks");
+    Widget friendsTasks = Text("Friends' Tasks");
 
     return Scaffold(
       drawer: Drawer(
@@ -113,185 +116,39 @@ class _TodoPageState extends State<TodoPage> {
         )
       ])),
       appBar: AppBar(
-          iconTheme: IconThemeData(color: Colors.black),
-          elevation: 0,
-          backgroundColor: Color(0xFFFFFFFF),
-          title: Center(
-            child: FlutterLogo(),
+        iconTheme: IconThemeData(color: Colors.black),
+        elevation: 0,
+        backgroundColor: Color(0xFFFFFFFF),
+        title: Center(
+          child: FlutterLogo(),
+        ),
+      ),
+      bottomNavigationBar: NavigationBar(
+        onDestinationSelected: (int index) {
+          setState(() {
+            currentPageIndex = index;
+          });
+        },
+        selectedIndex: currentPageIndex,
+        destinations: const <Widget>[
+          NavigationDestination(
+            icon: Icon(Icons.home),
+            label: 'Home',
           ),
-          actions: [
-            PopupMenuButton(
-              icon: Icon(
-                Icons.arrow_drop_down,
-                color: Colors.black,
-              ),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20)
-                      .copyWith(topRight: Radius.circular(0))),
-              padding: EdgeInsets.all(10),
-              elevation: 10,
-              color: Colors.grey.shade100,
-              onSelected: (value) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('$value item pressed')));
-              },
-              itemBuilder: (context) {
-                return [
-                  PopupMenuItem(
-                      padding: EdgeInsets.only(right: 50, left: 20),
-                      value: 'Home',
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(children: [
-                              Icon(
-                                Icons.home,
-                                size: 20,
-                                color: Colors.blue,
-                              ),
-                              SizedBox(
-                                width: 5,
-                              ),
-                              Text(
-                                'My Tasks',
-                                style: TextStyle(
-                                    color: Color(0xff885566),
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                            ])
-                          ]))
-                ];
-              },
-            )
-          ]),
-      body: Container(
-          padding: EdgeInsets.all(30),
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          decoration: const BoxDecoration(
-              borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(50), topRight: Radius.circular(50)),
-              color: Color(0xff30384c)),
-          child: StreamBuilder(
-            stream: todosStream,
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return Center(
-                  child: Text("Error encountered! ${snapshot.error}"),
-                );
-              } else if (snapshot.connectionState == ConnectionState.waiting) {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else if (!snapshot.hasData) {
-                return Center(
-                  child: Text("No Todos Found"),
-                );
-              }
-
-              return ListView.builder(
-                itemCount: snapshot.data?.docs.length,
-                itemBuilder: ((context, index) {
-                  Todo todo = Todo.fromJson(snapshot.data?.docs[index].data()
-                      as Map<String, dynamic>);
-                  String currentUserId =
-                      Provider.of<AuthProvider>(context, listen: false)
-                          .userId
-                          .toString();
-
-                  //get friends of user
-
-                  if (todo.userId == currentUserId) {
-                    return Container(
-                      padding: EdgeInsets.only(top: 20),
-                      child: ListTile(
-                        title: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(todo.title,
-                                  style: TextStyle(
-                                      fontSize: 18,
-                                      // fontWeight: FontWeight.bold,
-                                      color: Colors.white)),
-                              Row(
-                                children: [
-                                  Icon(CupertinoIcons.person,
-                                      color: Colors.grey),
-                                  Text(todo.userId,
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          // fontWeight: FontWeight.bold,
-                                          color: Colors.grey))
-                                ],
-                              )
-                            ]),
-                        leading: Checkbox(
-                          value: todo.completed,
-                          onChanged: (bool? value) {
-                            context
-                                .read<TodoListProvider>()
-                                .changeSelectedTodo(todo);
-                            context
-                                .read<TodoListProvider>()
-                                .toggleStatus(value!);
-                          },
-                        ),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                context
-                                    .read<TodoListProvider>()
-                                    .changeSelectedTodo(todo);
-                                showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) => TodoModal(
-                                    type: 'Edit',
-                                  ),
-                                );
-                              },
-                              icon: Icon(
-                                CupertinoIcons.pencil,
-                                color: Colors.blue,
-                              ),
-                            ),
-                            IconButton(
-                              onPressed: () {
-                                if (todo.userId == currentUserId) {
-                                  //only user can delete
-                                  context
-                                      .read<TodoListProvider>()
-                                      .changeSelectedTodo(todo);
-                                  showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) =>
-                                        TodoModal(
-                                      type: 'Delete',
-                                    ),
-                                  );
-                                } else {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
-                                          content: Text(
-                                              'You can only delete your own tasks.')));
-                                }
-                              },
-                              icon: Icon(CupertinoIcons.delete_solid,
-                                  color: Colors.blue),
-                            )
-                          ],
-                        ),
-                      ),
-                    );
-                  } else {
-                    return const Text(" ");
-                  }
-                }),
-              );
-            },
-          )),
+          NavigationDestination(
+            icon: Icon(Icons.notifications),
+            label: 'Feed',
+          ),
+        ],
+      ),
+      body: <Widget>[
+        Container(alignment: Alignment.center, child: myTasks),
+        Container(
+          color: Colors.green,
+          alignment: Alignment.center,
+          child: friendsTasks,
+        ),
+      ][currentPageIndex],
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           showDialog(
@@ -305,12 +162,14 @@ class _TodoPageState extends State<TodoPage> {
       ),
     );
   }
-
-  @override
-  void dispose() {
-    super.dispose();
-  }
 }
+
+
+
+
+
+
+
 
 //References:
 // https://blog.logrocket.com/how-to-add-navigation-drawer-flutter/
