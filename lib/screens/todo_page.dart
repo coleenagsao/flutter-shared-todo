@@ -85,13 +85,35 @@ class _TodoPageState extends State<TodoPage> {
                           ],
                         )
                       ]),
-                  leading: Checkbox(
-                    value: todo.completed,
-                    onChanged: (bool? value) {
-                      context.read<TodoListProvider>().changeSelectedTodo(todo);
-                      context.read<TodoListProvider>().toggleStatus(value!);
-                    },
-                  ),
+                  leading: todo.completed == true
+                      ? IconButton(
+                          onPressed: () {
+                            context
+                                .read<TodoListProvider>()
+                                .changeSelectedTodo(todo);
+                            context
+                                .read<TodoListProvider>()
+                                .toggleStatus(!todo.completed);
+                          },
+                          icon: Icon(
+                            CupertinoIcons.check_mark_circled,
+                            color: Colors.green,
+                          ),
+                        )
+                      : IconButton(
+                          onPressed: () {
+                            context
+                                .read<TodoListProvider>()
+                                .changeSelectedTodo(todo);
+                            context
+                                .read<TodoListProvider>()
+                                .toggleStatus(!todo.completed);
+                          },
+                          icon: Icon(
+                            CupertinoIcons.xmark_circle,
+                            color: Colors.orange,
+                          ),
+                        ),
                   trailing: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
@@ -230,17 +252,15 @@ class _TodoPageState extends State<TodoPage> {
                                     ],
                                   )
                                 ]),
-                            leading: Checkbox(
-                              value: todo.completed,
-                              onChanged: (bool? value) {
-                                context
-                                    .read<TodoListProvider>()
-                                    .changeSelectedTodo(todo);
-                                context
-                                    .read<TodoListProvider>()
-                                    .toggleStatus(value!);
-                              },
-                            ),
+                            leading: todo.completed == true
+                                ? Icon(
+                                    CupertinoIcons.check_mark_circled,
+                                    color: Colors.green,
+                                  )
+                                : Icon(
+                                    CupertinoIcons.xmark_circle,
+                                    color: Colors.orange,
+                                  ),
                             trailing: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
