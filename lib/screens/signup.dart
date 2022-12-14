@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:week7_networking_discussion/providers/auth_provider.dart';
 
@@ -258,7 +259,9 @@ class _SignupPageState extends State<SignupPage> {
           //call the auth provider here
         },
         child: const Text('Back', style: TextStyle(color: Colors.white)),
-        style: ElevatedButton.styleFrom(shape: StadiumBorder()),
+        style: ElevatedButton.styleFrom(
+            shape: StadiumBorder(),
+            backgroundColor: Color.fromRGBO(48, 56, 76, 1)),
       ),
     );
 
@@ -270,14 +273,35 @@ class _SignupPageState extends State<SignupPage> {
           padding: const EdgeInsets.only(
               bottom: 40, top: 100.0, left: 40.0, right: 40.0),
           children: <Widget>[
-            const Text(
-              "SIGN UP TO BRIDGE",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+            Row(children: [
+              const Text(
+                "Sign up to  ",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromRGBO(48, 56, 76, 1),
+                ),
               ),
-            ),
+              Text(
+                "BRIDGE",
+                textAlign: TextAlign.center,
+                style: GoogleFonts.play(
+                    textStyle: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.green)),
+              ),
+              Text(
+                ".",
+                textAlign: TextAlign.center,
+                style: GoogleFonts.play(
+                    textStyle: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromRGBO(48, 56, 76, 1))),
+              ),
+            ]),
             Image.asset(
               'images/signup.png',
               width: 600,
@@ -291,8 +315,7 @@ class _SignupPageState extends State<SignupPage> {
             loc,
             email,
             password,
-            SignupButton,
-            backButton
+            Row(children: [SignupButton, Text("  "), backButton])
           ],
         ),
       ),
