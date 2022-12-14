@@ -498,7 +498,7 @@ class _TodoPageState extends State<TodoPage> {
                                   },
                                   icon: Icon(
                                     CupertinoIcons.pencil_circle,
-                                    color: Colors.green,
+                                    color: Colors.blue,
                                   ),
                                 ),
                               ],

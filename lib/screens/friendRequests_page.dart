@@ -69,14 +69,16 @@ class _FriendRequestsPageState extends State<FriendRequestsPage> {
                                 child: Row(
                                   children: [
                                     Expanded(
-                                      /*1*/
+                                        /*1*/
+                                        child: Container(
+                                      padding: const EdgeInsets.all(32),
                                       child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: [
                                           Padding(
                                               padding: EdgeInsets.fromLTRB(
-                                                  130, 5, 130, 20),
+                                                  130, 1, 130, 20),
                                               child: Container(
                                                   height: 8.0,
                                                   width: 100.0,
@@ -85,33 +87,38 @@ class _FriendRequestsPageState extends State<FriendRequestsPage> {
                                                       borderRadius:
                                                           BorderRadius.circular(
                                                               8.0)))),
-                                          /*2*/
                                           Container(
                                             padding: const EdgeInsets.only(
                                                 bottom: 8),
                                             child: Text(
-                                              '${user.fname} ${user.lname}',
+                                              '@${user.uname}',
                                               style: TextStyle(
-                                                color: Colors.blue[700],
+                                                color: Colors.green,
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
                                           ),
-                                          Text(
-                                            '@${user.uname}',
-                                            style: TextStyle(
-                                              color: Colors.grey[500],
-                                              fontSize: 16,
-                                            ),
+                                          ListTile(
+                                            title: Text(
+                                                "${user.fname} ${user.lname}"),
+                                            subtitle: Text("Name"),
                                           ),
-                                          const Divider(),
-                                          Text(
-                                            '${user.bio}',
-                                            style: TextStyle(
-                                              color: Colors.grey[500],
-                                              fontSize: 16,
-                                            ),
+                                          ListTile(
+                                            title: Text("${user.email}"),
+                                            subtitle: Text("Email"),
+                                          ),
+                                          ListTile(
+                                            title: Text("${user.bio}"),
+                                            subtitle: Text("Bio"),
+                                          ),
+                                          ListTile(
+                                            title: Text("${user.loc}"),
+                                            subtitle: Text("Location"),
+                                          ),
+                                          ListTile(
+                                            title: Text("${user.bdate}"),
+                                            subtitle: Text("Birthday"),
                                           ),
                                           const Divider(),
                                           Row(children: [
@@ -126,13 +133,9 @@ class _FriendRequestsPageState extends State<FriendRequestsPage> {
                                               ),
                                             ),
                                           ]),
-                                          _buildInfoBlock(
-                                              Icons.cake_rounded, user.bdate),
-                                          _buildInfoBlock(
-                                              Icons.location_pin, user.loc)
                                         ],
                                       ),
-                                    ),
+                                    )),
                                   ],
                                 ),
                               ));
@@ -170,7 +173,7 @@ class _FriendRequestsPageState extends State<FriendRequestsPage> {
                 ),
               );
             } else {
-              return Text(" ");
+              return SizedBox.shrink();
             }
           }),
         );

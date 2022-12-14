@@ -290,7 +290,7 @@ class _SearchPageState extends State<SearchPage> {
                     );
                   }
                 } else {
-                  return Text(" ");
+                  return SizedBox.shrink();
                 }
               }),
             );

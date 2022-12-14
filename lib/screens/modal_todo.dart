@@ -106,13 +106,13 @@ class TodoModal extends StatelessWidget {
                     }),
                 Text(" "),
                 Text(
-                    "Last Edited User with userid:'${context.read<TodoListProvider>().selected.lastEditedBy}'?",
+                    "Last Edited by ${context.read<TodoListProvider>().selected.lastEditedBy} ?",
                     style: TextStyle(
                         fontSize: 12,
                         // fontWeight: FontWeight.bold,
                         color: Colors.grey)),
                 Text(
-                    "Last Edited TimeStamp:'${context.read<TodoListProvider>().selected.lastEditedTimeStamp}'?",
+                    "Last Edited on ${context.read<TodoListProvider>().selected.lastEditedTimeStamp} ?",
                     style: TextStyle(
                         fontSize: 12,
                         // fontWeight: FontWeight.bold,
