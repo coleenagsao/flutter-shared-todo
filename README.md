@@ -7,8 +7,21 @@
 
 ### Screenshots
 
+##### Exhibit A: Login Page
+
 ![Login page](loginsc.png)
-Exhibit A: Login Page
+
+##### Exhibit B: Signup Page
+
+![Signup page](signupsc.png)
+
+##### Exhibit C: Shared Todo Page
+
+![Todo page](todopagesc.png)
+
+##### Exhibit D: Drawer Page
+
+![Drawer](drawersc.png)
 
 ### Things you did in the code (logic, solutions)
 
