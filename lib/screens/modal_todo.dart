@@ -6,6 +6,7 @@
 */
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:week7_networking_discussion/models/todo_model.dart';
 import 'package:week7_networking_discussion/providers/auth_provider.dart';
@@ -17,6 +18,7 @@ class TodoModal extends StatelessWidget {
   TextEditingController titleController = TextEditingController();
   TextEditingController descController = TextEditingController();
   TextEditingController dateController = TextEditingController();
+  TextEditingController timeController = TextEditingController();
 
   TodoModal({
     super.key,
@@ -46,25 +48,92 @@ class TodoModal extends StatelessWidget {
             "Are you sure you want to delete '${context.read<TodoListProvider>().selected.title}'?",
           );
         }
-      // Edit and add will have input field in them
+      case 'Edit':
+        {
+          titleController.text =
+              '${context.read<TodoListProvider>().selected.title}';
+          descController.text =
+              '${context.read<TodoListProvider>().selected.description}';
+          dateController.text =
+              '${context.read<TodoListProvider>().selected.deadline}';
+          timeController.text =
+              '${context.read<TodoListProvider>().selected.deadlineTime}';
+
+          return Column(children: [
+            Text(
+              "Last Edited User with userid:'${context.read<TodoListProvider>().selected.lastEditedBy}'?",
+            ),
+            Text(
+              "Last Edited TimeStamp:'${context.read<TodoListProvider>().selected.lastEditedTimeStamp}'?",
+            ),
+            TextField(
+              controller: titleController,
+              decoration: InputDecoration(
+                labelText: "Title",
+                hintText: "Enter task title",
+              ),
+            ),
+            TextField(
+              controller: descController,
+              decoration: InputDecoration(
+                labelText: "Description",
+                hintText: "Enter task description",
+              ),
+            ),
+            TextField(
+                readOnly: true,
+                controller: dateController,
+                decoration: InputDecoration(
+                  labelText: "Deadine Date",
+                  hintText: "Enter task deadline date",
+                ),
+                onTap: () async {
+                  var date = await showDatePicker(
+                      context: context,
+                      initialDate: DateTime.now(),
+                      firstDate: DateTime(1900),
+                      lastDate: DateTime(2100));
+                  dateController.text = date.toString().substring(0, 10);
+                }),
+            TextField(
+                readOnly: true,
+                controller: timeController,
+                decoration: InputDecoration(
+                  labelText: "Deadline Time",
+                  hintText: "Enter task deadline time",
+                ),
+                onTap: () async {
+                  var time = await showTimePicker(
+                      context: context, initialTime: TimeOfDay.now());
+                  timeController.text =
+                      time == null ? "" : time.format(context);
+                })
+          ]);
+        }
+      // Add will have input field in them
       default:
         return Column(children: [
           TextField(
             controller: titleController,
             decoration: InputDecoration(
-              hintText: "Title",
+              labelText: "Title",
+              hintText: "Enter task title",
             ),
           ),
           TextField(
             controller: descController,
             decoration: InputDecoration(
-              hintText: "Description",
+              labelText: "Description",
+              hintText: "Enter task description",
             ),
           ),
           TextField(
               readOnly: true,
               controller: dateController,
-              decoration: InputDecoration(hintText: 'Deadline'),
+              decoration: InputDecoration(
+                labelText: "Deadine Date",
+                hintText: "Enter task deadline date",
+              ),
               onTap: () async {
                 var date = await showDatePicker(
                     context: context,
@@ -72,6 +141,18 @@ class TodoModal extends StatelessWidget {
                     firstDate: DateTime(1900),
                     lastDate: DateTime(2100));
                 dateController.text = date.toString().substring(0, 10);
+              }),
+          TextField(
+              readOnly: true,
+              controller: timeController,
+              decoration: InputDecoration(
+                labelText: "Deadline Time",
+                hintText: "Enter task deadline time",
+              ),
+              onTap: () async {
+                var time = await showTimePicker(
+                    context: context, initialTime: TimeOfDay.now());
+                timeController.text = time == null ? "" : time.format(context);
               })
         ]);
     }
@@ -91,8 +172,14 @@ class TodoModal extends StatelessWidget {
                   // context.watch<AuthProvider>().userId.toString(),
                   completed: false,
                   title: titleController.text,
-                  desc: descController.text,
+                  description: descController.text,
                   deadline: dateController.text,
+                  deadlineTime: timeController.text,
+                  lastEditedBy:
+                      Provider.of<AuthProvider>(context, listen: false)
+                          .userId
+                          .toString(),
+                  lastEditedTimeStamp: DateTime.now().toString(),
                   notifications: []);
 
               context.read<TodoListProvider>().addTodo(temp);
@@ -103,8 +190,7 @@ class TodoModal extends StatelessWidget {
             }
           case 'Edit':
             {
-              String lastEditedTimeStamp =
-                  DateTime.now().toString().substring(0, 10);
+              String lastEditedTimeStamp = DateTime.now().toString();
               String? lastEditedBy =
                   Provider.of<AuthProvider>(context, listen: false)
                       .userId
@@ -113,6 +199,7 @@ class TodoModal extends StatelessWidget {
                     titleController.text,
                     descController.text,
                     dateController.text,
+                    timeController.text,
                     lastEditedBy.toString(),
                     lastEditedTimeStamp,
                   );
