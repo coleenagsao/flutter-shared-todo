@@ -9,8 +9,11 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
+  String? _errorMessage;
+
   @override
   Widget build(BuildContext context) {
+    //text controllers
     TextEditingController emailController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
     TextEditingController fnameController = TextEditingController();
@@ -20,51 +23,103 @@ class _SignupPageState extends State<SignupPage> {
     TextEditingController locController = TextEditingController();
     TextEditingController bioController = TextEditingController();
 
+    //error checking
+    List emailErrors = [
+      "No user found for that email.",
+      'The account already exists for that email.',
+      "Fill out your email.",
+      'Internal error occurred',
+      "Server is handling too many requests. Try again later",
+      "Enter your desired email."
+    ];
+    List passwordErrors = [
+      "The password provided is too weak.",
+      "Wrong password provided for that user.",
+      "Fill out your password.",
+      'Internal error occurred',
+      "Server is handling too many requests. Try again later",
+      "Enter your desired password.",
+      "Min. 8 characters, 1 uppercase, 1 lowercase, 1 no, and 1 special char required."
+    ];
+
+    String? extractErrorMessage(dynamic code) {
+      switch (code) {
+        //email errors
+        case 'invalid-email':
+          return 'No user found for that email.';
+        case 'email-already-in-use':
+          return 'The account already exists for that email.';
+        case 'user-not-found':
+          return 'No user found for that email.';
+
+        //password erros
+        case 'weak-password':
+          return 'The password provided is too weak.';
+        case 'wrong-password':
+          return 'Wrong password provided for that user.';
+        case 'internal-error':
+          return 'Internal error occurred';
+        case "too-many-requests":
+          return "Server is handling too many requests. Try again later";
+        //others
+        default:
+          return null;
+      }
+    }
+
     final fname = TextField(
       controller: fnameController,
-      decoration: const InputDecoration(
-        prefixIcon: Icon(Icons.person),
-        hintText: "First Name",
-      ),
+      decoration: InputDecoration(
+          prefixIcon: Icon(Icons.person),
+          hintText: "First Name",
+          errorText:
+              _errorMessage == "Enter your first name." ? _errorMessage : null),
     );
 
     final lname = TextField(
       controller: lnameController,
-      decoration: const InputDecoration(
-        prefixIcon: Icon(Icons.person),
-        hintText: "Last Name",
-      ),
+      decoration: InputDecoration(
+          prefixIcon: Icon(Icons.person),
+          hintText: "Last Name",
+          errorText:
+              _errorMessage == "Enter your last name." ? _errorMessage : null),
     );
 
     final uname = TextField(
       controller: unameController,
-      decoration: const InputDecoration(
-        prefixIcon: Icon(Icons.verified_user),
-        hintText: "Username",
-      ),
+      decoration: InputDecoration(
+          prefixIcon: Icon(Icons.verified_user),
+          hintText: "Username",
+          errorText:
+              _errorMessage == "Enter your username." ? _errorMessage : null),
     );
 
     final loc = TextField(
       controller: locController,
-      decoration: const InputDecoration(
-        prefixIcon: Icon(Icons.location_city),
-        hintText: "Location",
-      ),
+      decoration: InputDecoration(
+          //Nicanica28!
+          prefixIcon: Icon(Icons.location_city),
+          hintText: "Location",
+          errorText:
+              _errorMessage == "Enter your location" ? _errorMessage : null),
     );
 
     final bio = TextField(
       controller: bioController,
-      decoration: const InputDecoration(
-        prefixIcon: Icon(Icons.lightbulb),
-        hintText: "Bio",
-      ),
+      decoration: InputDecoration(
+          prefixIcon: Icon(Icons.lightbulb),
+          hintText: "Bio",
+          errorText: _errorMessage == "Enter your bio." ? _errorMessage : null),
     );
 
     final bdate = TextField(
         readOnly: true,
         controller: dateController,
         decoration: InputDecoration(
-            prefixIcon: Icon(Icons.date_range), hintText: 'Birthday'),
+            prefixIcon: Icon(Icons.date_range),
+            hintText: 'Birthday',
+            errorText:
+                _errorMessage == "Enter your birthday." ? _errorMessage : null),
         onTap: () async {
           var date = await showDatePicker(
               context: context,
@@ -76,19 +131,23 @@ class _SignupPageState extends State<SignupPage> {
 
     final email = TextField(
       controller: emailController,
-      decoration: const InputDecoration(
-        prefixIcon: Icon(Icons.email),
-        hintText: "Email",
-      ),
+      decoration: InputDecoration(
+          prefixIcon: Icon(Icons.email),
+          hintText: "Email",
+          errorText: (emailErrors.any((item) => item == _errorMessage))
+              ? _errorMessage
+              : null),
     );
 
     final password = TextField(
       controller: passwordController,
       obscureText: true,
-      decoration: const InputDecoration(
-        prefixIcon: Icon(Icons.key),
-        hintText: 'Password',
-      ),
+      decoration: InputDecoration(
+          prefixIcon: Icon(Icons.key),
+          hintText: 'Password',
+          errorText: (passwordErrors.any((item) => item == _errorMessage)
+              ? _errorMessage
+              : null)),
     );
 
     //generate search keyword possibilities
@@ -102,24 +161,89 @@ class _SignupPageState extends State<SignupPage> {
       return caseSearchList;
     }
 
+    bool validatePasswordStructure(String value) {
+      String pattern =
+          r'^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$';
+      RegExp regExp = new RegExp(pattern);
+      return regExp.hasMatch(value);
+    }
+
     final SignupButton = Padding(
       padding: const EdgeInsets.symmetric(vertical: 16.0),
       child: ElevatedButton(
         onPressed: () async {
-          List searchKeywords =
-              setSearchParam('${fnameController.text} ${lnameController.text}');
+          //check for usual errors (not on server)
+          if (fnameController.text == "") {
+            setState(() {
+              _errorMessage = "Enter your first name.";
+              print("Sign up Field: $_errorMessage");
+            });
+          } else if (lnameController.text == "") {
+            setState(() {
+              _errorMessage = "Enter your last name.";
+              print("Sign up Field: $_errorMessage");
+            });
+          } else if (unameController.text == "") {
+            setState(() {
+              _errorMessage = "Enter your username.";
+              print("Sign up Field: $_errorMessage");
+            });
+          } else if (locController.text == "") {
+            setState(() {
+              _errorMessage = "Enter your location.";
+              print("Sign up Field: $_errorMessage");
+            });
+          } else if (bioController.text == "") {
+            setState(() {
+              _errorMessage = "Enter your bio.";
+              print("Sign up Field: $_errorMessage");
+            });
+          } else if (dateController.text == "") {
+            setState(() {
+              _errorMessage = "Enter your birthday.";
+              print("Sign up Field: $_errorMessage");
+            });
+          } else if (emailController.text == "") {
+            setState(() {
+              _errorMessage = "Enter your desired email.";
+              print("Sign up Email Error: $_errorMessage");
+            });
+          } else if (passwordController.text == "") {
+            setState(() {
+              _errorMessage = "Enter your desired password.";
+              print("Sign up Password Error: $_errorMessage");
+            });
+          } else if (!validatePasswordStructure(passwordController.text)) {
+            setState(() {
+              _errorMessage =
+                  "Min. 8 characters, 1 uppercase, 1 lowercase, 1 no, and 1 special char required.";
+              print("Sign up Password Error: $_errorMessage");
+            });
+          } else {
+            List searchKeywords = setSearchParam(
+                '${fnameController.text} ${lnameController.text}');
 
-          context.read<AuthProvider>().signUp(
-              emailController.text,
-              passwordController.text,
-              fnameController.text,
-              lnameController.text,
-              unameController.text,
-              dateController.text,
-              locController.text,
-              bioController.text,
-              searchKeywords);
-          Navigator.pop(context);
+            dynamic result = await context.read<AuthProvider>().signUp(
+                emailController.text,
+                passwordController.text,
+                fnameController.text,
+                lnameController.text,
+                unameController.text,
+                dateController.text,
+                locController.text,
+                bioController.text,
+                searchKeywords);
+
+            setState(() {
+              if (result == null) {
+                print("Sucessfully created user");
+                Navigator.pop(context);
+              } else {
+                _errorMessage = extractErrorMessage(result);
+                print("Sign up Error from Firebase: $_errorMessage");
+              }
+            });
+          }
         },
         child: const Text('Sign up', style: TextStyle(color: Colors.white)),
         style: ElevatedButton.styleFrom(shape: StadiumBorder()),
