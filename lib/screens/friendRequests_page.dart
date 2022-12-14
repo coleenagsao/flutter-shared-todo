@@ -1,3 +1,10 @@
+/*
+  Author: Coleen Therese A. Agsao
+  Section: CMSC 23 D5L
+  Exercise number: Project
+  Description: Shared todo app with friends system
+*/
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:week7_networking_discussion/models/user_model.dart';
@@ -14,11 +21,12 @@ class FriendRequestsPage extends StatefulWidget {
 }
 
 class _FriendRequestsPageState extends State<FriendRequestsPage> {
-  int currentPageIndex = 0;
+  int currentPageIndex = 0; //counter for the page to load
 
   @override
   Widget build(BuildContext context) {
-    Stream<QuerySnapshot> usersStream = context.watch<UserListProvider>().users;
+    Stream<QuerySnapshot> usersStream =
+        context.watch<UserListProvider>().users; //get users
 
     Widget friendRequestsList = StreamBuilder(
       stream: usersStream,
@@ -164,6 +172,7 @@ class _FriendRequestsPageState extends State<FriendRequestsPage> {
                           context
                               .read<UserListProvider>()
                               .changeSelectedUser(user);
+                          //delete the friend request
                           context
                               .read<UserListProvider>()
                               .deleteFriendRequest(currentUserId);

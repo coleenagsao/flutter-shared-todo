@@ -1,26 +1,21 @@
-# Simple Todo App using Firebase
+### Student information
 
-The todo app connects to firebase cloud firestore and authentication. It uses a provider for state management
+- **Name**: Coleen Therese A. Agsao
+- **Student Number**: 2020-07885
+- **Section**: CMSC 23 D5L
+- **App Description**: The project is a Flutter mobile application composed of a sign in, sign-up and a shared todo list features with a user’s friends.
 
-## Folder Structure
-```
-lib
-├───api
-│   └───firebase_auth_api.dart*
-│   └───firebase_todo_api.dart
-├───models
-│   └───todo_model.dart
-├───providers
-│   └───todo_provider.dart
-│   └───auth_provider.dart*
-├───screens
-│   ├───modal_todo.dart
-│   └───todo_page.dart
-│   └───login.dart*
-│   └───signup.dart*
-└───main.dart
-```
+### Screenshots
 
-* Models - contains the data model used
-* Providers - contains the Todo provider that contains the data and method logic
-* Screens - contains the screen/widgets used
+![Login page](loginsc.png)
+Exhibit A: Login Page
+
+### Things you did in the code (logic, solutions)
+
+### Challenges faced when developing the app
+
+### Test Cases
+
+##### Happy paths - the expected outputs that your application produces
+
+##### Unhappy paths - the expected errors/ways that a user can break your app

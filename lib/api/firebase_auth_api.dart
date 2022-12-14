@@ -1,10 +1,21 @@
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fake_cloud_firestore/fake_cloud_firestore.dart';
+import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
 
 class FirebaseAuthAPI {
   static final FirebaseAuth auth = FirebaseAuth.instance;
   static final FirebaseFirestore db = FirebaseFirestore.instance;
+  //final db = FakeFirebaseFirestore();
+
+  // final auth = MockFirebaseAuth(
+  //     mockUser: MockUser(
+  //   isAnonymous: false,
+  //   uid: 'someuid',
+  //   email: 'charlie@paddyspub.com',
+  //   displayName: 'Charlie',
+  // ));
 
   Stream<User?> getUser() {
     return auth.authStateChanges();

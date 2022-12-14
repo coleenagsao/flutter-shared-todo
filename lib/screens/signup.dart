@@ -69,6 +69,7 @@ class _SignupPageState extends State<SignupPage> {
     }
 
     final fname = TextField(
+      key: const Key('fnameField'),
       controller: fnameController,
       decoration: InputDecoration(
           prefixIcon: Icon(Icons.person),
@@ -78,6 +79,7 @@ class _SignupPageState extends State<SignupPage> {
     );
 
     final lname = TextField(
+      key: const Key('lnameField'),
       controller: lnameController,
       decoration: InputDecoration(
           prefixIcon: Icon(Icons.person),

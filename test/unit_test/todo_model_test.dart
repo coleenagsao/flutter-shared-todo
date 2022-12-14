@@ -11,18 +11,13 @@ void main() {
           deadline: "12-07-2012",
           deadlineTime: "09:07 AM",
           completed: false,
-          notifications: [],
-          lastEditedBy: "VRTRjh2FC1OWtIu4ghE6zh9nETm2",
-          lastEditedTimeStamp: "2022-12-14 17:33:31.986");
-
+          notifications: []);
       expect(modelInstance.userId, 1);
       expect(modelInstance.description, "Desc1");
       expect(modelInstance.title, "Test Todo");
       expect(modelInstance.deadline, "12-07-2012");
       expect(modelInstance.deadlineTime, "09:07 AM");
       expect(modelInstance.completed, false);
-      expect(modelInstance.lastEditedTimeStamp, "VRTRjh2FC1OWtIu4ghE6zh9nETm2");
-      expect(modelInstance.lastEditedTimeStamp, "2022-12-14 17:33:31.986");
     });
 
     test('Test Todo Model toJson method', () {

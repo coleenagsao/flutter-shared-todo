@@ -1,3 +1,10 @@
+/*
+  Author: Coleen Therese A. Agsao
+  Section: CMSC 23 D5L
+  Exercise number: Project
+  Description: Shared todo app with friends system
+*/
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:week7_networking_discussion/models/user_model.dart';
@@ -45,6 +52,8 @@ class _FriendsPageState extends State<FriendsPage> {
                 Provider.of<AuthProvider>(context, listen: false)
                     .userId
                     .toString();
+
+            //only display the widgets if not user's and user is in current users' friends
             if (user.userId.toString() != currentUserId &&
                 (user.friends.any((item) => item.contains(currentUserId)))) {
               return ListTile(
@@ -146,10 +155,11 @@ class _FriendsPageState extends State<FriendsPage> {
                   children: [
                     ElevatedButton(
                         onPressed: () {
-                          //add current user id to this user's friend request
+                          //change the selected user
                           context
                               .read<UserListProvider>()
                               .changeSelectedUser(user);
+                          //call the function to unfriend
                           context
                               .read<UserListProvider>()
                               .unfriend(currentUserId);

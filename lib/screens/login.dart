@@ -1,3 +1,11 @@
+/*
+  Author: Coleen Therese A. Agsao
+  Section: CMSC 23 D5L
+  Exercise number: Project
+  Description: Shared todo app with friends system
+  Base Code Used: Claizel Coubeili Cepe (27 October 2022)
+*/
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -19,6 +27,7 @@ class _LoginPageState extends State<LoginPage> {
     TextEditingController emailController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
 
+    //list of email errors to filter what will be displayed per field
     List emailErrors = [
       "No user found for that email.",
       'The account already exists for that email.',
@@ -26,6 +35,8 @@ class _LoginPageState extends State<LoginPage> {
       'Internal error occurred',
       "Server is handling too many requests. Try again later"
     ];
+
+    //list of password errors to filter what will be displayed per field
     List passwordErrors = [
       "The password provided is too weak.",
       "Wrong password provided for that user.",
@@ -34,6 +45,7 @@ class _LoginPageState extends State<LoginPage> {
       "Server is handling too many requests. Try again later"
     ];
 
+    //return appropriate error message based on the e.code from the firebase
     String? extractErrorMessage(String code) {
       switch (code) {
         //email errors
@@ -60,36 +72,43 @@ class _LoginPageState extends State<LoginPage> {
     }
 
     final email = TextField(
+      key: const Key('emailField'),
       controller: emailController,
       decoration: InputDecoration(
           prefixIcon: Icon(Icons.email),
           hintText: "Email",
+          //if errormessage set is one of the email errors, display
           errorText: (emailErrors.any((item) => item == _errorMessage))
               ? _errorMessage
               : null),
     );
 
     final password = TextField(
+      key: const Key('pwField'),
       controller: passwordController,
       obscureText: true,
       decoration: InputDecoration(
           prefixIcon: Icon(Icons.key),
           hintText: 'Password',
+          //if errormessage set is one of the password errors, display
           errorText: (passwordErrors.any((item) => item == _errorMessage))
               ? _errorMessage
               : null),
     );
 
     final loginButton = Padding(
+      key: const Key('loginButton'),
       padding: const EdgeInsets.symmetric(vertical: 16.0),
       child: ElevatedButton(
         onPressed: () async {
           if (emailController.text == "") {
+            //check if email is empty
             setState(() {
               _errorMessage = "Fill out your email.";
               print("Email Check in Client: $_errorMessage");
             });
           } else if (passwordController.text == "") {
+            //check if pwd is empty
             setState(() {
               _errorMessage = "Fill out your password.";
               print("Password Check in Client: $_errorMessage");
@@ -99,7 +118,8 @@ class _LoginPageState extends State<LoginPage> {
                 .read<AuthProvider>()
                 .signIn(emailController.text, passwordController.text);
             setState(() {
-              _errorMessage = extractErrorMessage(result);
+              _errorMessage = extractErrorMessage(
+                  result); //call function for the error message
               //print("Login: $_errorMessage");
             });
           }
@@ -111,6 +131,7 @@ class _LoginPageState extends State<LoginPage> {
     );
 
     final signupButton = Padding(
+        key: const Key('signUpButton'),
         padding: const EdgeInsets.symmetric(vertical: 16.0),
         child: ElevatedButton(
           onPressed: () async {
@@ -165,7 +186,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ]),
             Image.asset(
-              'images/login.png',
+              'assets/images/login.png',
               width: 600,
               height: 400,
             ),

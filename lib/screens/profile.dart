@@ -1,8 +1,14 @@
+/*
+  Author: Coleen Therese A. Agsao
+  Section: CMSC 23 D5L
+  Exercise number: Project
+  Description: Shared todo app with friends system
+*/
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:week7_networking_discussion/providers/auth_provider.dart';
 import 'package:week7_networking_discussion/providers/user_provider.dart';
 import 'package:week7_networking_discussion/models/user_model.dart';
 
@@ -52,6 +58,8 @@ class Profile extends StatelessWidget {
               itemBuilder: ((context, index) {
                 User user = User.fromJson(
                     snapshot.data?.docs[index].data() as Map<String, dynamic>);
+
+                //display the info of the user if matched with the userId converted
                 if (user.userId.toString() == userId) {
                   return Container(
                     padding: const EdgeInsets.all(32),
@@ -115,20 +123,4 @@ class Profile extends StatelessWidget {
       ),
     );
   }
-}
-
-_buildInfoBlock(icon, info) {
-  //temp
-  return Row(children: [
-    Icon(
-      icon,
-      color: Colors.grey[500],
-    ),
-    Text(
-      '  ${info}',
-      style: TextStyle(
-        color: Colors.grey[500],
-      ),
-    ),
-  ]);
 }

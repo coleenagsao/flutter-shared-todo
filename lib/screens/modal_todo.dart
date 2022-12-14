@@ -1,12 +1,12 @@
 /*
-  Base Code Used:
-  Created by: Claizel Coubeili Cepe
-  Date: 27 October 2022
-  Description: Sample todo app with networking
+  Author: Coleen Therese A. Agsao
+  Section: CMSC 23 D5L
+  Exercise number: Project
+  Description: Shared todo app with friends system
+  Base Code Used: Claizel Coubeili Cepe (27 October 2022)
 */
 
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:week7_networking_discussion/models/todo_model.dart';
 import 'package:week7_networking_discussion/providers/auth_provider.dart';
@@ -50,6 +50,7 @@ class TodoModal extends StatelessWidget {
         }
       case 'Edit':
         {
+          //display the current details on the selected to do in case user does not change anything
           titleController.text =
               '${context.read<TodoListProvider>().selected.title}';
           descController.text =
@@ -89,7 +90,9 @@ class TodoModal extends StatelessWidget {
                           initialDate: DateTime.now(),
                           firstDate: DateTime(1900),
                           lastDate: DateTime(2100));
-                      dateController.text = date.toString().substring(0, 10);
+                      dateController.text = date
+                          .toString()
+                          .substring(0, 10); //get the date portion
                     }),
                 TextField(
                     readOnly: true,
@@ -101,10 +104,12 @@ class TodoModal extends StatelessWidget {
                     onTap: () async {
                       var time = await showTimePicker(
                           context: context, initialTime: TimeOfDay.now());
-                      timeController.text =
-                          time == null ? "" : time.format(context);
+                      timeController.text = time == null
+                          ? ""
+                          : time.format(context); //format the TimeDay()
                     }),
                 Text(" "),
+                //access the last edited by and last edited timestamp
                 Text(
                     "Last Edited by ${context.read<TodoListProvider>().selected.lastEditedBy} ?",
                     style: TextStyle(
@@ -119,7 +124,7 @@ class TodoModal extends StatelessWidget {
                         color: Colors.grey)),
               ]);
         }
-      // Add will have input field in them
+      //default field if not delete and edit
       default:
         return Column(children: [
           TextField(
@@ -184,10 +189,12 @@ class TodoModal extends StatelessWidget {
                   description: descController.text,
                   deadline: dateController.text,
                   deadlineTime: timeController.text,
+                  //initialize the last edited as the owner
                   lastEditedBy:
                       Provider.of<AuthProvider>(context, listen: false)
                           .userId
                           .toString(),
+                  //initialize the last edited as the time of adding
                   lastEditedTimeStamp: DateTime.now().toString(),
                   notifications: []);
 
