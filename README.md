@@ -22,6 +22,13 @@ Exhibit A: Login Page
 - **Displaying of User's Info in the Todo**. I had a difficulty in fetching the user's info based on the todo user id to make the user experience better. However, I just ended up using the userid instead.
 
 ### Test Cases
+
 ##### Happy paths - the expected outputs that your application produces
 
+- When user signed up with a password less than 8 characters, it should display an error message that the password's requirements are the following.
+- When user signs out, the context must be popped, and it must return the login page.
+- When the user edits their friend's task, the text widget shall now display their user id and the timestamp of edit.
+
 ##### Unhappy paths - the expected errors/ways that a user can break your app
+
+- When the user does not add any date in the selected dates part by incorrectly exiting the date/time picker. An error will be displayed in the terminal
