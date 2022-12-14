@@ -298,7 +298,6 @@ class _TodoPageState extends State<TodoPage> {
                 Provider.of<AuthProvider>(context, listen: false)
                     .userId
                     .toString();
-            //context.read<UserListProvider>().changeSelectedFriend(user);
 
             if (user.userId == currentUserId) {
               return StreamBuilder(
