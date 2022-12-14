@@ -14,7 +14,8 @@ class Todo {
   String? deadline;
   bool completed;
   List? notifications;
-  String? lastEdited;
+  String? lastEditedBy;
+  String? lastEditedTimeStamp;
 
   Todo({
     required this.userId,

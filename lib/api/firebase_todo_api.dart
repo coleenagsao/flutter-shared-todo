@@ -28,10 +28,12 @@ class FirebaseTodoAPI {
     }
   }
 
-  Future<String> editTodo(String? id, String title) async {
+  Future<String> editTodo(String? id, String title, String desc) async {
     try {
-      print("New String: $title");
+      print("New Title: $title");
+      print("New Description: $desc");
       await db.collection("todos").doc(id).update({"title": title});
+      await db.collection("todos").doc(id).update({"description": desc});
 
       return "Successfully edited todo!";
     } on FirebaseException catch (e) {
