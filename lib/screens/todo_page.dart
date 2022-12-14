@@ -346,9 +346,124 @@ class _TodoPageState extends State<TodoPage> {
                                           color: Colors.white)),
                                   Row(
                                     children: [
-                                      Icon(CupertinoIcons.person_alt_circle,
-                                          color: Colors.grey),
-                                      Text(todo.userId,
+                                      IconButton(
+                                        onPressed: () {
+                                          showModalBottomSheet(
+                                              context: context,
+                                              isScrollControlled: true,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(25.0),
+                                              ),
+                                              builder: (context) {
+                                                return FractionallySizedBox(
+                                                    heightFactor: 0.8,
+                                                    child: Container(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              32),
+                                                      child: Row(
+                                                        children: [
+                                                          Expanded(
+                                                            /*1*/
+                                                            child: Column(
+                                                              crossAxisAlignment:
+                                                                  CrossAxisAlignment
+                                                                      .start,
+                                                              children: [
+                                                                Padding(
+                                                                    padding: EdgeInsets
+                                                                        .fromLTRB(
+                                                                            160,
+                                                                            10,
+                                                                            130,
+                                                                            20),
+                                                                    child: Container(
+                                                                        height:
+                                                                            8.0,
+                                                                        width:
+                                                                            100.0,
+                                                                        decoration: BoxDecoration(
+                                                                            color:
+                                                                                Colors.grey[300],
+                                                                            borderRadius: BorderRadius.circular(8.0)))),
+                                                                /*2*/
+                                                                Container(
+                                                                  padding: const EdgeInsets
+                                                                          .only(
+                                                                      bottom:
+                                                                          8),
+                                                                  child: Text(
+                                                                    'Task Information',
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color: Colors
+                                                                              .blue[
+                                                                          700],
+                                                                      fontSize:
+                                                                          18,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                                ListTile(
+                                                                  title: Text(
+                                                                      "${todo.title}"),
+                                                                  subtitle: Text(
+                                                                      "Title"),
+                                                                ),
+                                                                ListTile(
+                                                                  title: Text(
+                                                                      "${todo.description}"),
+                                                                  subtitle: Text(
+                                                                      "Description"),
+                                                                ),
+                                                                ListTile(
+                                                                  title: Text(
+                                                                      "${todo.deadline}"),
+                                                                  subtitle: Text(
+                                                                      "Deadline Date"),
+                                                                ),
+                                                                ListTile(
+                                                                  title: Text(
+                                                                      "${todo.deadlineTime}"),
+                                                                  subtitle: Text(
+                                                                      "Deadline Time"),
+                                                                ),
+                                                                const Divider(),
+                                                                Row(children: [
+                                                                  Icon(
+                                                                    Icons
+                                                                        .info_rounded,
+                                                                    color: Colors
+                                                                            .grey[
+                                                                        500],
+                                                                  ),
+                                                                  Text(
+                                                                    '  ${todo.userId}',
+                                                                    style:
+                                                                        TextStyle(
+                                                                      color: Colors
+                                                                              .grey[
+                                                                          500],
+                                                                    ),
+                                                                  ),
+                                                                ]),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ));
+                                              });
+                                        },
+                                        icon: const Icon(
+                                            Icons.expand_circle_down),
+                                        color: Colors.blue,
+                                      ),
+                                      Text("View",
                                           style: TextStyle(
                                               fontSize: 14,
                                               // fontWeight: FontWeight.bold,
