@@ -19,6 +19,7 @@ class UserListProvider with ChangeNotifier {
   // Stream<QuerySnapshot> get user() => _userStream;
 
   User get selected => _loggedInUser!;
+  User get selectedFriend => _selectedUser!;
 
   changeSelectedUser(User item) {
     _loggedInUser = item;

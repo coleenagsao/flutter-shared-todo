@@ -59,56 +59,65 @@ class TodoModal extends StatelessWidget {
           timeController.text =
               '${context.read<TodoListProvider>().selected.deadlineTime}';
 
-          return Column(children: [
-            Text(
-              "Last Edited User with userid:'${context.read<TodoListProvider>().selected.lastEditedBy}'?",
-            ),
-            Text(
-              "Last Edited TimeStamp:'${context.read<TodoListProvider>().selected.lastEditedTimeStamp}'?",
-            ),
-            TextField(
-              controller: titleController,
-              decoration: InputDecoration(
-                labelText: "Title",
-                hintText: "Enter task title",
-              ),
-            ),
-            TextField(
-              controller: descController,
-              decoration: InputDecoration(
-                labelText: "Description",
-                hintText: "Enter task description",
-              ),
-            ),
-            TextField(
-                readOnly: true,
-                controller: dateController,
-                decoration: InputDecoration(
-                  labelText: "Deadine Date",
-                  hintText: "Enter task deadline date",
+          return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextField(
+                  controller: titleController,
+                  decoration: InputDecoration(
+                    labelText: "Title",
+                    hintText: "Enter task title",
+                  ),
                 ),
-                onTap: () async {
-                  var date = await showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime(1900),
-                      lastDate: DateTime(2100));
-                  dateController.text = date.toString().substring(0, 10);
-                }),
-            TextField(
-                readOnly: true,
-                controller: timeController,
-                decoration: InputDecoration(
-                  labelText: "Deadline Time",
-                  hintText: "Enter task deadline time",
+                TextField(
+                  controller: descController,
+                  decoration: InputDecoration(
+                    labelText: "Description",
+                    hintText: "Enter task description",
+                  ),
                 ),
-                onTap: () async {
-                  var time = await showTimePicker(
-                      context: context, initialTime: TimeOfDay.now());
-                  timeController.text =
-                      time == null ? "" : time.format(context);
-                })
-          ]);
+                TextField(
+                    readOnly: true,
+                    controller: dateController,
+                    decoration: InputDecoration(
+                      labelText: "Deadine Date",
+                      hintText: "Enter task deadline date",
+                    ),
+                    onTap: () async {
+                      var date = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(1900),
+                          lastDate: DateTime(2100));
+                      dateController.text = date.toString().substring(0, 10);
+                    }),
+                TextField(
+                    readOnly: true,
+                    controller: timeController,
+                    decoration: InputDecoration(
+                      labelText: "Deadline Time",
+                      hintText: "Enter task deadline time",
+                    ),
+                    onTap: () async {
+                      var time = await showTimePicker(
+                          context: context, initialTime: TimeOfDay.now());
+                      timeController.text =
+                          time == null ? "" : time.format(context);
+                    }),
+                Text(" "),
+                Text(
+                    "Last Edited User with userid:'${context.read<TodoListProvider>().selected.lastEditedBy}'?",
+                    style: TextStyle(
+                        fontSize: 12,
+                        // fontWeight: FontWeight.bold,
+                        color: Colors.grey)),
+                Text(
+                    "Last Edited TimeStamp:'${context.read<TodoListProvider>().selected.lastEditedTimeStamp}'?",
+                    style: TextStyle(
+                        fontSize: 12,
+                        // fontWeight: FontWeight.bold,
+                        color: Colors.grey)),
+              ]);
         }
       // Add will have input field in them
       default:

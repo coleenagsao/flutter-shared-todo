@@ -196,6 +196,8 @@ class _TodoPageState extends State<TodoPage> {
                 Provider.of<AuthProvider>(context, listen: false)
                     .userId
                     .toString();
+            //context.read<UserListProvider>().changeSelectedFriend(user);
+
             if (user.userId == currentUserId) {
               return StreamBuilder(
                 stream:
@@ -244,7 +246,7 @@ class _TodoPageState extends State<TodoPage> {
                                     children: [
                                       Icon(CupertinoIcons.person_alt_circle,
                                           color: Colors.blue),
-                                      Text(" ${todo.userId}",
+                                      Text(todo.userId,
                                           style: TextStyle(
                                               fontSize: 14,
                                               // fontWeight: FontWeight.bold,
