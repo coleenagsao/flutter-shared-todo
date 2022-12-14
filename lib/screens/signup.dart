@@ -25,7 +25,7 @@ class _SignupPageState extends State<SignupPage> {
 
     //error checking
     List emailErrors = [
-      "No user found for that email.",
+      "Invalid email.",
       'The account already exists for that email.',
       "Fill out your email.",
       'Internal error occurred',
@@ -46,7 +46,7 @@ class _SignupPageState extends State<SignupPage> {
       switch (code) {
         //email errors
         case 'invalid-email':
-          return 'No user found for that email.';
+          return 'Invalid email.';
         case 'email-already-in-use':
           return 'The account already exists for that email.';
         case 'user-not-found':
