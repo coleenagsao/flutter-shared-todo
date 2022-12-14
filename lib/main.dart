@@ -4,6 +4,7 @@
   Description: Sample todo app with networking
 */
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:week7_networking_discussion/providers/todo_provider.dart';
 import 'package:week7_networking_discussion/providers/auth_provider.dart';
@@ -57,7 +58,12 @@ class MyApp extends StatelessWidget {
         '/suggestions': (context) => const SuggestionsPage(),
         '/search': (context) => SearchPage()
       },
-      theme: ThemeData(primarySwatch: Colors.blue, fontFamily: 'Helvetica'),
+      theme: ThemeData(
+        primarySwatch: Colors.green,
+        textTheme: GoogleFonts.latoTextTheme(
+          Theme.of(context).textTheme,
+        ),
+      ),
     );
   }
 }

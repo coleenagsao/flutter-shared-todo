@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:week7_networking_discussion/providers/auth_provider.dart';
 import 'package:week7_networking_discussion/screens/signup.dart';
@@ -104,7 +105,8 @@ class _LoginPageState extends State<LoginPage> {
           }
         },
         child: const Text('Log In', style: TextStyle(color: Colors.white)),
-        style: ElevatedButton.styleFrom(shape: StadiumBorder()),
+        style: ElevatedButton.styleFrom(
+            shape: StadiumBorder(), backgroundColor: Colors.green),
       ),
     );
 
@@ -119,7 +121,10 @@ class _LoginPageState extends State<LoginPage> {
             );
           },
           child: const Text('Sign Up', style: TextStyle(color: Colors.white)),
-          style: ElevatedButton.styleFrom(shape: StadiumBorder()),
+          style: ElevatedButton.styleFrom(
+            shape: StadiumBorder(),
+            backgroundColor: Color(0xff30384c),
+          ),
         ));
 
     return Scaffold(
@@ -130,23 +135,43 @@ class _LoginPageState extends State<LoginPage> {
           padding: const EdgeInsets.only(
               bottom: 40, top: 100.0, left: 40.0, right: 40.0),
           children: <Widget>[
-            const Text(
-              "LOG IN TO BRIDGE",
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+            Row(children: [
+              const Text(
+                "Login to  ",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Color.fromRGBO(48, 56, 76, 1),
+                ),
               ),
-            ),
+              Text(
+                "BRIDGE",
+                textAlign: TextAlign.center,
+                style: GoogleFonts.play(
+                    textStyle: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.green)),
+              ),
+              Text(
+                ".",
+                textAlign: TextAlign.center,
+                style: GoogleFonts.play(
+                    textStyle: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: Color.fromRGBO(48, 56, 76, 1))),
+              ),
+            ]),
             Image.asset(
-              'assets/images/login.jpg',
+              'images/login.png',
               width: 600,
               height: 400,
             ),
             email,
             password,
-            loginButton,
-            signupButton,
+            Row(children: [loginButton, Text("  "), signupButton]),
           ],
         ),
       ),

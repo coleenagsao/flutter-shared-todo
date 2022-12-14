@@ -279,7 +279,7 @@ class _SignupPageState extends State<SignupPage> {
               ),
             ),
             Image.asset(
-              'assets/images/login.jpg',
+              'images/signup.png',
               width: 600,
               height: 400,
             ),

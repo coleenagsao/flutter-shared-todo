@@ -308,7 +308,7 @@ class _TodoPageState extends State<TodoPage> {
           child: ListView(padding: EdgeInsets.zero, children: [
         const UserAccountsDrawerHeader(
           decoration: BoxDecoration(
-            color: Color(0xff30384c),
+            color: Color.fromRGBO(48, 56, 76, 1),
           ),
           accountName: Text(
             'Bridge',
