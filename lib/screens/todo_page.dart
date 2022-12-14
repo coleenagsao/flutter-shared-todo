@@ -7,6 +7,7 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:week7_networking_discussion/api/firebase_todo_api.dart';
@@ -78,7 +79,7 @@ class _TodoPageState extends State<TodoPage> {
                           children: [
                             Icon(CupertinoIcons.person_alt_circle,
                                 color: Colors.blue),
-                            Text(" ${todo.userId}",
+                            Text("  You",
                                 style: TextStyle(
                                     fontSize: 14,
                                     // fontWeight: FontWeight.bold,
@@ -162,7 +163,7 @@ class _TodoPageState extends State<TodoPage> {
                 ),
               );
             } else {
-              return const Text(" ");
+              return SizedBox.shrink();
             }
           }),
         );
@@ -281,7 +282,7 @@ class _TodoPageState extends State<TodoPage> {
                                   },
                                   icon: Icon(
                                     CupertinoIcons.pencil_circle,
-                                    color: Colors.blue,
+                                    color: Colors.green,
                                   ),
                                 ),
                               ],
@@ -289,14 +290,15 @@ class _TodoPageState extends State<TodoPage> {
                           ),
                         );
                       } else {
-                        return const Text("");
+                        return SizedBox.shrink();
                       }
                     }),
                   );
                 },
               );
             } else {
-              return const Text(" ");
+              return SizedBox.shrink();
+              ;
             }
           }),
         );
