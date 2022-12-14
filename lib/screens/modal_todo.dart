@@ -103,7 +103,7 @@ class TodoModal extends StatelessWidget {
             }
           case 'Edit':
             {
-              context.read<TodoListProvider>().editTodo(titleController.text, descController.text);
+              context.read<TodoListProvider>().editTodo(titleController.text, descController.text, dateController.text);
 
               // Remove dialog after editing
               Navigator.of(context).pop();
